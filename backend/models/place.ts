@@ -53,7 +53,7 @@ const placeSchema: Schema = new Schema({
   },
   address: {
     type: String,
-    required: [false, "Please enter place url link"],
+    required: [false, "Please enter place address"],
   },
   location: {
     type: {
