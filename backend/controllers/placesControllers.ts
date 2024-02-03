@@ -1,15 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
-import Place from "../models/place";
+import Place, { IPlace } from "../models/place";
 import ErrorHandler from "../utils/errorHandler";
 import { catchAsyncErrors } from "../middlewares/catchAsyncErrors";
+import APIFilters from "../utils/apiFilters";
 
 // Get all places => /api/places
 export const allPlaces = catchAsyncErrors(async (req: NextRequest) => {
-  const resPerPage: number = 8;
-  const places = await Place.find();
+  const resPerPage: number = 4;
+
+  const { searchParams } = new URL(req.url);
+
+  const queryStr: any = {};
+
+  searchParams.forEach((value, key) => {
+    queryStr[key] = value;
+  });
+
+  const placesCount: number = await Place.countDocuments();
+  const apiFilters = new APIFilters(Place, queryStr).search().filter();
+
+  let places: IPlace[] = await apiFilters.query;
+  const filterPlacesCount: number = places.length;
+
+  apiFilters.pagination(resPerPage);
+  places = await apiFilters.query.clone();
 
   return NextResponse.json({
     success: true,
+    placesCount,
+    filterPlacesCount,
     resPerPage,
     places,
   });
