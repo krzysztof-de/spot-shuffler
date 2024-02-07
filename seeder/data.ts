@@ -29,16 +29,7 @@ export const places = [
     ratings: 5,
     isFavorite: false,
     numOfReviews: 8,
-    images: [
-      {
-        public_id: "example/demo/beachfronta1",
-        url: "https://picsum.photos/400/300",
-      },
-      {
-        public_id: "example/demo/beachfrontb2",
-        url: "https://picsum.photos/400/300",
-      },
-    ],
+    images: [],
     category: "Przyroda",
   },
   {

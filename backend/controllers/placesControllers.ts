@@ -11,12 +11,10 @@ export const allPlaces = catchAsyncErrors(async (req: NextRequest) => {
   const { searchParams } = new URL(req.url);
 
   const queryStr: any = {};
-
   searchParams.forEach((value, key) => {
     queryStr[key] = value;
   });
 
-  const placesCount: number = await Place.countDocuments();
   const apiFilters = new APIFilters(Place, queryStr).search().filter();
 
   let places: IPlace[] = await apiFilters.query;
@@ -27,7 +25,6 @@ export const allPlaces = catchAsyncErrors(async (req: NextRequest) => {
 
   return NextResponse.json({
     success: true,
-    placesCount,
     filterPlacesCount,
     resPerPage,
     places,

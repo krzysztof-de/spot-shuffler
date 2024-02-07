@@ -26,7 +26,7 @@ export interface IPlace extends Document {
   pageLink: string;
   address: string;
   location: ILocation;
-  rating: number;
+  ratings: number;
   isFavorite: boolean;
   numOfReviews: number;
   images: IImage[];
