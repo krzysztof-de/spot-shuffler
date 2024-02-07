@@ -1,10 +1,12 @@
-import "bootstrap/dist/css/bootstrap.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Head from "./head";
 import { GlobalProvider } from "./GlobalProvider";
 import Script from "next/script";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,10 +24,15 @@ export default function RootLayout({
     <html lang="en">
       <Head />
       <body className={inter.className}>
-        <GlobalProvider>{children}</GlobalProvider>
+        <GlobalProvider>
+          <Header />
+          {children}
+          <Footer />
+        </GlobalProvider>
+
+        <Script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" strategy="afterInteractive"/>
+        <Script src="https://kit.fontawesome.com/2c0e0e99f3.js"></Script>
       </body>
-      <Script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></Script>
-      <Script src="https://kit.fontawesome.com/2c0e0e99f3.js"></Script>
     </html>
   );
 }

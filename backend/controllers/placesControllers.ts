@@ -73,7 +73,7 @@ export const updatePlace = catchAsyncErrors(
     }
 
     place = await Place.findByIdAndUpdate(params.id, body, {
-      new: true, //returns updated room
+      new: true, //returns updated place
     });
 
     return NextResponse.json({
