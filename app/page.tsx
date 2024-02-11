@@ -1,10 +1,13 @@
 import Home from "@/components/Home";
 import Error from "./error";
 
+export const metadata = {
+  title: "Home - Places",
+};
+export const dynamic = "force-dynamic";
+
 const getPlaces = async () => {
-  const res = await fetch(`${process.env.API_URL}api/places`, {
-    cache: "no-store",
-  });
+  const res = await fetch(`${process.env.API_URL}api/places`);
   return res.json();
 };
 

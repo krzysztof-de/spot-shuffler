@@ -186,7 +186,6 @@ body {
   background-color: #e61e4d;
   border-color: #e61e4d;
   color: white;
-  margin-top: 2.5rem;
   font-weight: bold;
   --bs-btn-active-bg: #b02a37;
   --bs-btn-active-color: #fff;
@@ -306,6 +305,7 @@ nav {
 
 .card-img-top {
   border-radius: 0.8rem;
+
 }
 
 .ratings {
@@ -342,6 +342,7 @@ nav {
 }
 
 .place-feature p {
+  margin-bottom: .5rem;
   margin-left: 0.4rem;
   display: inline-block;
 }

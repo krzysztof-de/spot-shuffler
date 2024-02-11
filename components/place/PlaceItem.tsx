@@ -11,6 +11,7 @@ interface Props {
 }
 
 const PlaceItem = ({ place }: Props) => {
+  console.log("link --->", place?.pageLink);
   return (
     <div className="col-sm-12 col-md-6 col-lg-3 my-3 d-flex">
       <div className="card p-2 w-100">
@@ -24,29 +25,44 @@ const PlaceItem = ({ place }: Props) => {
           alt={place?.name}
           height={200}
           width={400}
+          style={{ objectFit: "cover" }}
         />
         <div className="card-body d-flex flex-column">
           <h5 className="card-title">
-            <a href="/places/placeId">{place?.name }</a>
+            <Link href={`/places/${place?._id}`}>{place?.name}</Link>
           </h5>
           <div className="mt-auto">
-            <p className="card-text mt-2">
-              <b>$100</b> / night
+            <p className="card-text my-2">
+              <a
+                href={place?.pageLink}
+                className="btn btn-light  btn-sm"
+                type="button"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i className="fa-solid fa-arrow-up-right-from-square me-2"></i>
+                site
+              </a>
             </p>
           </div>
           <div>
             <div>
               <StarRatings
-                rating={place?.ratings}
+                rating={place?.rating}
                 starRatedColor="blue"
                 numberOfStars={6}
                 name="rating"
                 starDimension="18px"
                 starSpacing="2px"
               />
-              <span className="no-of-reviews">({place?.numOfReviews} Reviews)</span>
+              <span className="no-of-reviews">
+                ({place?.numOfReviews} Reviews)
+              </span>
             </div>
-            <Link className="btn view-btn mt-3 w-100" href={`/places/${place?._id}`}>
+            <Link
+              className="btn view-btn mt-3 w-100"
+              href={`/places/${place?._id}`}
+            >
               View Details
             </Link>
           </div>
