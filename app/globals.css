@@ -183,22 +183,7 @@ body {
 }
 
 .form-btn {
-  background-color: #e61e4d;
-  border-color: #e61e4d;
-  color: white;
   font-weight: bold;
-  --bs-btn-active-bg: #b02a37;
-  --bs-btn-active-color: #fff;
-  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: #dc3545;
-  --bs-btn-disabled-border-color: #dc3545;
-}
-
-.form-btn:hover {
-  background-color: #bb2d3b;
-  border-color: #bb2d3b;
-  color: white;
 }
 
 .react-datepicker {
@@ -237,9 +222,7 @@ body {
 nav {
   background-color: white;
   padding: 1rem 1rem;
-  -webkit-box-shadow: 0 4px 6px -6px #222;
-  -moz-box-shadow: 0 4px 6px -6px #222;
-  box-shadow: 0 4px 6px -6px #222;
+  border-bottom: 1px solid #ccc;
 }
 
 .login-header-btn {
@@ -305,7 +288,6 @@ nav {
 
 .card-img-top {
   border-radius: 0.8rem;
-
 }
 
 .ratings {
@@ -342,7 +324,7 @@ nav {
 }
 
 .place-feature p {
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
   margin-left: 0.4rem;
   display: inline-block;
 }
@@ -368,6 +350,12 @@ footer {
 }
 
 /* Pagination */
+
+.pagination {
+  gap: .2rem;
+  justify-content: center;
+}
+
 .page-item.active .page-link {
   background-color: #e61e4d;
   border-color: #e61e4d;

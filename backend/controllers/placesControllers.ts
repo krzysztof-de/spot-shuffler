@@ -6,7 +6,7 @@ import APIFilters from "../utils/apiFilters";
 
 // Get all places => /api/places
 export const allPlaces = catchAsyncErrors(async (req: NextRequest) => {
-  const resPerPage: number = 4;
+  const resPerPage: number = 2;
 
   const { searchParams } = new URL(req.url);
 

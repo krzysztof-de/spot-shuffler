@@ -9,7 +9,7 @@ const PlaceFeatures = ({ place }: Props) => {
   return (
     <div className="features mt-4">
       <div className="place-feature">
-        <i className="fa fa-cog fa-fw fa-users" aria-hidden="true"></i>
+      <i className="fa-solid fa-icons text-primary"></i>
         <p>{place?.category}</p>
       </div>
       <div className="place-feature">

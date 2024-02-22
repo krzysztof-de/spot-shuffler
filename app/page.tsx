@@ -6,13 +6,21 @@ export const metadata = {
 };
 export const dynamic = "force-dynamic";
 
-const getPlaces = async () => {
-  const res = await fetch(`${process.env.API_URL}api/places`);
+const getPlaces = async (searchParams: string) => {
+  console.log(searchParams);
+
+  const urlParams = new URLSearchParams(searchParams);
+  const queryString = urlParams.toString();
+  const res = await fetch(`${process.env.API_URL}api/places?${queryString}`);
   return res.json();
 };
 
-export default async function HomePage() {
-  const data = await getPlaces();
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: string;
+}) {
+  const data = await getPlaces(searchParams);
 
   if (data?.message) {
     return <Error error={data} />;

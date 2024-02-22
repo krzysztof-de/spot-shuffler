@@ -35,7 +35,7 @@ const NewReview = () => {
             <div className="modal-footer">
               <button
                 type="button"
-                className="btn my-3 form-btn w-100"
+                className="btn btn-primary my-3 form-btn w-100"
                 data-bs-dismiss="modal"
                 aria-label="Close"
               >

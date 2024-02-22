@@ -4,14 +4,13 @@ import { IPlace } from "@/backend/models/place";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import StarRatings from "react-star-ratings";
+import Ratings from "../ratings/Ratings";
 
 interface Props {
   place: IPlace;
 }
 
 const PlaceItem = ({ place }: Props) => {
-  console.log("link --->", place?.pageLink);
   return (
     <div className="col-sm-12 col-md-6 col-lg-3 my-3 d-flex">
       <div className="card p-2 w-100">
@@ -47,14 +46,7 @@ const PlaceItem = ({ place }: Props) => {
           </div>
           <div>
             <div>
-              <StarRatings
-                rating={place?.rating}
-                starRatedColor="blue"
-                numberOfStars={6}
-                name="rating"
-                starDimension="18px"
-                starSpacing="2px"
-              />
+              <Ratings rating={place?.rating} starDimension={18} />
               <span className="no-of-reviews">
                 ({place?.numOfReviews} Reviews)
               </span>

@@ -1,12 +1,11 @@
 "use client";
 import { IPlace } from "@/backend/models/place";
 import React from "react";
-import StarRatings from "react-star-ratings";
 import PlaceImageSlider from "./PlaceImageSlider";
 import PlaceFeatures from "./PlaceFeatures";
-import PlacesDatePicker from "./PlacesDatePicker";
 import ListReviews from "../review/ListReviews";
 import NewReview from "../review/NewReview";
+import Ratings from "../ratings/Ratings";
 
 interface Props {
   data: {
@@ -29,14 +28,7 @@ const PlaceDetails = ({ data }: Props) => {
 
         <div className="col-12 col-lg-6">
           <div className="ratings mt-auto mb-3">
-            <StarRatings
-              rating={place?.rating}
-              starRatedColor="blue"
-              numberOfStars={6}
-              name="rating"
-              starDimension="22px"
-              starSpacing="2px"
-            />
+          <Ratings rating={place?.rating} starDimension={22}/>
             <span className="no-of-reviews">
               ({place?.numOfReviews} Reviews)
             </span>
@@ -46,9 +38,9 @@ const PlaceDetails = ({ data }: Props) => {
         </div>
       </div>
 
-      <div className="row mt-4 mb-5">
+      <div className="row my-4">
         <div className="col-12">
-          <h3>Description</h3>
+          <h4>Description</h4>
           <p>{place?.description}</p>
         </div>
       </div>

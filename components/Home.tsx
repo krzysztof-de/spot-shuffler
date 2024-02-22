@@ -1,6 +1,7 @@
 import React from "react";
 import PlaceItem from "./place/PlaceItem";
 import { IPlace } from "@/backend/models/place";
+import CustomPagination from "./layout/CustomPagination";
 
 interface Props {
   data: {
@@ -28,6 +29,8 @@ const Home = ({ data }: Props) => {
           )}
         </div>
       </section>
+      <CustomPagination resPerPage={resPerPage} filterPlacesCount={filterPlacesCount} />
+      {/* <Pagination /> */}
     </div>
   );
 };

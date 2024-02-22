@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 const Header = () => {
@@ -27,12 +28,12 @@ const Header = () => {
               aria-expanded="false"
             >
               <figure className="avatar avatar-nav">
-                <img
-                  src="/images/default_avatar.png"
+                <Image
+                  src="/images/avatar.png"
                   alt="John Doe"
                   className="rounded-circle placeholder-glow"
-                  height="50"
-                  width="50"
+                  height={50}
+                  width={50}
                 />
               </figure>
               <span className="placeholder-glow ps-1"> John Doe</span>
