@@ -1,3 +1,4 @@
+import { categories } from "@/utils/categories";
 import { Document, Schema, Types, model, models } from "mongoose";
 
 export interface ILocation {
@@ -95,9 +96,9 @@ const placeSchema: Schema = new Schema({
   ],
   category: {
     type: String,
-    required: [true, "Pleace enter place category"],
+    required: [true, "Please enter place category"],
     enum: {
-      value: "Przyroda",
+      values: categories,
       message: "Please select correct category for place",
     },
   },

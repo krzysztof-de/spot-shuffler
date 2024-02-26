@@ -18,7 +18,7 @@ export const places = [
         url: "https://picsum.photos/1200/600",
       },
     ],
-    category: "Przyroda",
+    category: "Education",
   },
   {
     name: "Beachfront Getaway - Sun, Surf, and Relaxation",
@@ -30,7 +30,7 @@ export const places = [
     isFavorite: false,
     numOfReviews: 8,
     images: [],
-    category: "Przyroda",
+    category: "Entertainment",
   },
   {
     name: "Mountain Retreat - Hiking & Nature Escape",
@@ -51,7 +51,7 @@ export const places = [
         url: "https://picsum.photos/1200/600",
       },
     ],
-    category: "Przyroda",
+    category: "Culture",
   },
   {
     name: "Artistic Studio in the Creative District",
@@ -72,6 +72,6 @@ export const places = [
         url: "https://picsum.photos/1200/600",
       },
     ],
-    category: "Przyroda",
+    category: "Culture",
   },
 ];
