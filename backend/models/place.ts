@@ -1,5 +1,5 @@
 import { categories } from "@/utils/categories";
-import { Document, Schema, Types, model, models } from "mongoose";
+import mongoose, { Document, Schema, Types, model, models } from "mongoose";
 
 export interface ILocation {
   type: string;
@@ -33,11 +33,11 @@ export interface IPlace extends Document {
   images: IImage[];
   category: string;
   reviews: IReview[];
-  user: Types.ObjectId;
+  user: mongoose.Schema.Types.ObjectId;
   createdAt: Date;
 }
 
-const placeSchema: Schema = new Schema({
+const placeSchema: Schema<IPlace> = new Schema({
   name: {
     type: String,
     required: [true, "Please enter place name"],
