@@ -1,13 +1,22 @@
 "use client";
+import { setIsAuthenticated, setUser } from "@/redux/feauters/userSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 
 const Header = () => {
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
   const { data } = useSession();
 
-  console.log("session data =>", data);
+  useEffect(() => {
+    if (data) {
+      dispatch(setUser(data?.user));
+      dispatch(setIsAuthenticated(true));
+    }
+  }, [data]);
 
   const logoutHandler = () => {
     signOut();
@@ -30,7 +39,7 @@ const Header = () => {
         </div>
 
         <div className="col-6 col-lg-3 mt-3 mt-md-0 text-end">
-          {data?.user ? (
+          {user ? (
             <div className="ml-4 dropdown d-line">
               <button
                 className="btn dropdown-toggle"
@@ -42,9 +51,7 @@ const Header = () => {
                 <figure className="avatar avatar-nav">
                   <Image
                     src={
-                      data?.user?.avatar
-                        ? data?.user?.avatar?.url
-                        : "/images/avatar.png"
+                      user?.avatar ? user?.avatar?.url : "/images/avatar.png"
                     }
                     alt="John Doe"
                     className="rounded-circle placeholder-glow"
@@ -52,10 +59,7 @@ const Header = () => {
                     width={50}
                   />
                 </figure>
-                <span className="placeholder-glow ps-1">
-                  {" "}
-                  {data?.user?.name}
-                </span>
+                <span className="placeholder-glow ps-1"> {user?.name}</span>
               </button>
 
               <div
