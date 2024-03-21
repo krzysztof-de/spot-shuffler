@@ -9,7 +9,7 @@ import { useSearchParams } from "next/navigation";
 interface Props {
   data: {
     success: true;
-    filterPlacesCount: number;
+    filteredPlacesCount: number;
     resPerPage: number;
     places: IPlace[];
   };
@@ -18,15 +18,15 @@ interface Props {
 const Home = ({ data }: Props) => {
   const searchParams = useSearchParams();
   const location = searchParams.get("location");
-  const { filterPlacesCount, resPerPage, places } = data;
+  const { filteredPlacesCount, resPerPage, places } = data;
 
   return (
     <div>
       <section id="places" className="container mt-5">
         <h2 className="mb-3 ml-2 stays-heading">
           {location
-            ? `${filterPlacesCount} place${
-                filterPlacesCount === 1 ? "" : "s"
+            ? `${filteredPlacesCount} place${
+                filteredPlacesCount === 1 ? "" : "s"
               } found with "${location}"`
             : "All places"}
         </h2>
@@ -43,7 +43,7 @@ const Home = ({ data }: Props) => {
       </section>
       <CustomPagination
         resPerPage={resPerPage}
-        filterPlacesCount={filterPlacesCount}
+        filterPlacesCount={filteredPlacesCount}
       />
     </div>
   );
