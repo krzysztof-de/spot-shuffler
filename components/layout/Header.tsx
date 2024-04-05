@@ -1,5 +1,5 @@
 "use client";
-import { setIsAuthenticated, setUser } from "@/redux/feauters/userSlice";
+import { setIsAuthenticated, setUser } from "@/redux/features/userSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";

@@ -7,13 +7,20 @@ export const userApi = createApi({
     updateProfile: builder.mutation({
       query(body) {
         return {
-          url: "/me/update ",
+          url: "/me/update",
           method: "PUT",
           body,
+        };
+      },
+    }),
+    updateSession: builder.query({
+      query() {
+        return {
+          url: "/auth/session?update",
         };
       },
     }),
   }),
 });
 
-export const { useUpdateProfileMutation } = userApi;
+export const { useUpdateProfileMutation, useLazyUpdateSessionQuery } = userApi;
