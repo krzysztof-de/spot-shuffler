@@ -67,6 +67,9 @@ const auth = async (req: NextApiRequest, res: NextApiResponse) => {
         return session;
       },
     },
+    pages: {
+      signIn: "/login",
+    },
     secret: process.env.NEXTAUTH_SECRET,
   });
 };
