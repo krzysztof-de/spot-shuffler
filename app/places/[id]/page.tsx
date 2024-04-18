@@ -17,7 +17,7 @@ const getPlace = async (id: string) => {
 export default async function PlaceDetailsPage({ params }: Props) {
   const data = await getPlace(params?.id);
 
-  if (data?.message) {
+  if (data?.errMessage) {
     return <Error error={data} />;
   }
 
