@@ -9,7 +9,7 @@ const nextConfig = {
     NEXTAUTH_SECRET: "DOASKPODKAPODALMAMSDAMDASDSADASDQWedqad8",
   },
   images: {
-    domains: ["picsum.photos"],
+    domains: ["picsum.photos", 'res.cloudinary.com'],
   },
 };
 
