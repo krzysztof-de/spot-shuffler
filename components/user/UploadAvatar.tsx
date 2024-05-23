@@ -56,7 +56,6 @@ const UploadAvatar = () => {
   const handleOnChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const files = Array.from(e.target.files || []);
 
-    console.log(files)
     const reader = new FileReader();
 
     reader.onload = () => {

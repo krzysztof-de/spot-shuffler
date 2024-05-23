@@ -7,14 +7,11 @@ const seedPlaces = async () => {
     await mongoose.connect("mongodb://127.0.0.1:27017/places");
 
     await Place.deleteMany();
-    console.log("Places deleted");
 
     await Place.insertMany(places);
-    console.log("Places added");
 
     process.exit();
   } catch (error) {
-    console.log(error);
     process.exit();
   }
 };

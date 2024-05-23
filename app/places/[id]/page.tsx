@@ -21,7 +21,6 @@ export default async function PlaceDetailsPage({ params }: Props) {
     return <Error error={data} />;
   }
 
-  console.log('data:', data)
   return <PlaceDetails data={data} />;
 }
 

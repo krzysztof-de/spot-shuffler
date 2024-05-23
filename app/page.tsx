@@ -7,7 +7,6 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 const getPlaces = async (searchParams: string) => {
-  console.log(searchParams);
 
   const urlParams = new URLSearchParams(searchParams);
   const queryString = urlParams.toString();
