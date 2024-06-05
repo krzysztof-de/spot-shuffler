@@ -6,7 +6,7 @@ import APIFilters from "../utils/apiFilters";
 
 // Get all places => /api/places
 export const allPlaces = catchAsyncErrors(async (req: NextRequest) => {
-  const resPerPage: number = 2;
+  const resPerPage: number = 10;
 
   const { searchParams } = new URL(req.url);
 
@@ -35,8 +35,9 @@ export const allPlaces = catchAsyncErrors(async (req: NextRequest) => {
 export const newPlace = catchAsyncErrors(async (req: NextRequest) => {
   const body = await req.json();
 
+  console.log("req body", body);
   const place = await Place.create(body);
-
+  console.log("returned place", place);
   return NextResponse.json({
     success: true,
     place,

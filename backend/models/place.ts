@@ -1,13 +1,10 @@
 import { categories } from "@/utils/categories";
 import mongoose, { Document, Schema, Types, model, models } from "mongoose";
+import { googleGeocode } from "../utils/geoCoder";
 
 export interface ILocation {
-  type: string;
   coordinates: number[];
   formattedAddress: string;
-  city: string;
-  zipCode: string;
-  country: string;
 }
 
 export interface IImage {
@@ -57,18 +54,11 @@ const placeSchema: Schema<IPlace> = new Schema({
     required: [false, "Please enter place address"],
   },
   location: {
-    type: {
-      type: String,
-      enum: ["Point"],
-    },
     coordinates: {
       type: [Number],
       index: "2dsphere",
     },
     formattedAddress: String,
-    city: String,
-    zipCode: String,
-    country: String,
   },
   rating: {
     type: Number,
@@ -128,6 +118,16 @@ const placeSchema: Schema<IPlace> = new Schema({
     type: Date,
     default: Date.now,
   },
+});
+
+// Setting up location
+placeSchema.pre("save", async function (next) {
+  const { geometry, formatted_address } = await googleGeocode(this.address);
+
+  this.location = {
+    coordinates: [geometry.location.lng, geometry.location.lat],
+    formattedAddress: formatted_address,
+  };
 });
 
 export default models.Place || model<IPlace>("Place", placeSchema);
