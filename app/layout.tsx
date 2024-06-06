@@ -29,7 +29,7 @@ export default function RootLayout({
           {children}
           <Footer />
         </GlobalProvider>
-
+        {/* TODO Replace with own script */}
         <Script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" strategy="afterInteractive"/>
         <Script src="https://kit.fontawesome.com/2c0e0e99f3.js"></Script>
       </body>

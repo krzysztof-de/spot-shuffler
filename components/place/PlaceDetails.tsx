@@ -6,6 +6,16 @@ import PlaceFeatures from "./PlaceFeatures";
 import ListReviews from "../review/ListReviews";
 import NewReview from "../review/NewReview";
 import Ratings from "../ratings/Ratings";
+import PlacesDatePicker from "./PlacesDatePicker";
+import {
+  APIProvider,
+  Map,
+  AdvancedMarker,
+  Pin,
+} from "@vis.gl/react-google-maps";
+import { getMapCenterPoint } from "@/utils/maps";
+import { GOOGLE_API_KEY } from "@/backend/utils/consts";
+import { get } from "http";
 
 interface Props {
   data: {
@@ -15,11 +25,13 @@ interface Props {
 
 const PlaceDetails = ({ data }: Props) => {
   const { place } = data;
+  const coords = place?.location?.coordinates;
 
+  console.log("mapCoordinates:", getMapCenterPoint({ coords }));
   return (
     <div className="container container-fluid">
       <h2 className="mt-5">{place?.name}</h2>
-      <p className="mb-4">{place?.address}</p>
+      <p className="mb-4">{place?.location?.formattedAddress || place?.address}</p>
 
       <div className="row">
         <div className="col-12 col-lg-6">
@@ -28,7 +40,7 @@ const PlaceDetails = ({ data }: Props) => {
 
         <div className="col-12 col-lg-6">
           <div className="ratings mt-auto mb-3">
-          <Ratings rating={place?.rating} starDimension={22}/>
+            <Ratings rating={place?.rating} starDimension={22}/>
             <span className="no-of-reviews">
               ({place?.numOfReviews} Reviews)
             </span>
@@ -42,6 +54,32 @@ const PlaceDetails = ({ data }: Props) => {
         <div className="col-12">
           <h4>Description</h4>
           <p>{place?.description}</p>
+        </div>
+
+        <div className="col-12">
+          <PlacesDatePicker place={place} />
+
+          {coords && (
+            <div className="my-5" style={{ height: "400px", width: "100%" }}>
+              <h3 className="mb-4">Location:</h3>
+              <APIProvider apiKey={GOOGLE_API_KEY}>
+                <Map
+                  defaultCenter={getMapCenterPoint({ coords })}
+                  mapId="PLACES_MAP_ID"
+                  defaultZoom={12}
+                  gestureHandling={"greedy"}
+                  disableDefaultUI={true}
+                />
+                <AdvancedMarker position={getMapCenterPoint({ coords })}>
+                  <Pin
+                    background={"#0f9d58"}
+                    borderColor={"#0f9d58"}
+                    glyphColor={"#60d98f"}
+                  />
+                </AdvancedMarker>
+              </APIProvider>
+            </div>
+          )}
         </div>
       </div>
 

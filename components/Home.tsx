@@ -5,6 +5,7 @@ import { IPlace } from "@/backend/models/place";
 import CustomPagination from "./layout/CustomPagination";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import PoiMarkers, { PoiType } from "./poiMarkers/PoiMarkers";
 
 interface Props {
   data: {
@@ -14,6 +15,10 @@ interface Props {
     places: IPlace[];
   };
 }
+
+const locations: PoiType[] = [
+  { key: "currentPlace", location: { lat: 52.237049, lng: 21.017532 } },
+];
 
 const Home = ({ data }: Props) => {
   const searchParams = useSearchParams();
@@ -41,6 +46,10 @@ const Home = ({ data }: Props) => {
           )}
         </div>
       </section>
+
+      {/* Multi markers for google map */}
+      {/* <PoiMarkers pois={locations} /> */}
+
       <CustomPagination
         resPerPage={resPerPage}
         filterPlacesCount={filteredPlacesCount}

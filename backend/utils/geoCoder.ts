@@ -1,4 +1,5 @@
 import axios from "axios";
+import { GOOGLE_API, GOOGLE_API_KEY } from "./consts";
 
 interface AddressComponent {
   long_name: string;
@@ -21,9 +22,6 @@ interface GeocodeResponse {
   results: GeocodeResult[];
   status: string;
 }
-
-const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
-const GOOGLE_API = process.env.NEXT_PUBLIC_GOOGLE_API as string;
 
 export const googleGeocode = async (
   address: string

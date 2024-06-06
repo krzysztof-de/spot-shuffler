@@ -7,10 +7,11 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 const getPlaces = async (searchParams: string) => {
-
   const urlParams = new URLSearchParams(searchParams);
   const queryString = urlParams.toString();
-  const res = await fetch(`${process.env.API_URL}api/places?${queryString}`);
+  const res = await fetch(`${process.env.API_URL}api/places?${queryString}`, {
+    cache: 'no-store',
+  });
   return res.json();
 };
 

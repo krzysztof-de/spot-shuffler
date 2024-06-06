@@ -30,7 +30,7 @@ const Header = () => {
             <a href="/">
               <img
                 style={{ cursor: "pointer" }}
-                src="images/fun_places_logo.png"
+                src="/images/fun_places_logo.png"
                 alt="fun flaces"
                 height={48}
               />
