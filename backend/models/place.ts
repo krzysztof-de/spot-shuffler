@@ -6,6 +6,11 @@ export interface ILocation {
   coordinates: number[];
   formattedAddress: string;
 }
+export interface IPrice {
+  children: number;
+  adults: number;
+  notes: string;
+}
 
 export interface IImage {
   public_id: string;
@@ -32,6 +37,7 @@ export interface IPlace extends Document {
   reviews: IReview[];
   user: mongoose.Schema.Types.ObjectId;
   createdAt: Date;
+  price: IPrice;
 }
 
 const placeSchema: Schema<IPlace> = new Schema({
@@ -48,6 +54,20 @@ const placeSchema: Schema<IPlace> = new Schema({
   pageLink: {
     type: String,
     required: [false, "Please enter place url link"],
+  },
+  price: {
+    children: {
+      type: Number,
+      required: [false, "Please enter valid price for kids"],
+    },
+    adults: {
+      type: Number,
+      required: [false, "Please enter valid price for adult"],
+    },
+    notes: {
+      type: String,
+      required: [false, "Please enter additional notes for price"],
+    },
   },
   address: {
     type: String,
