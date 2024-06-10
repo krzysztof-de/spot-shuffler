@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# README
 
-## Getting Started
+This README provides information about the project and how to configure the environment.
 
-First, run the development server:
+## Technologies Used
+- React: version 18
+- Next.js: version 14.2.3
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Environment Configuration
+To run the project locally, you need to configure the following environment variables:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`: Cloudinary cloud name
+- `NEXT_PUBLIC_CLOUDINARY_API_KEY`: Cloudinary API key
+- `CLOUDINARY_API_SECRET`: Cloudinary API secret
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `SMTP_HOST`: SMTP host for email sending
+- `SMTP_PORT`: SMTP port
+- `SMTP_USER`: SMTP username
+- `SMTP_PASSWORD`: SMTP password
+- `SMTP_FROM_EMAIL`: Email address for sending emails
+- `SMTP_FROM_NAME`: Name for the sender
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- `GOOGLE_API`: Google Maps API URL
+- `GOOGLE_API_KEY`: Google Maps API key
+- `GEOCODER_PROVIDER`: Geocoder provider (in this case, set to "google")
 
-## Learn More
+Please make sure to set these environment variables before running the project.
 
-To learn more about Next.js, take a look at the following resources:
+## Local Scripts
+To run the project locally, you can use the following scripts:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `dev`: Start the development server with `next dev`
+- `build`: Build the project with `next build`
+- `start`: Start the production server with `next start`
+- `lint`: Run linting with `next lint`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Make sure to run the appropriate script based on your needs.
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+-+-+-+-+-

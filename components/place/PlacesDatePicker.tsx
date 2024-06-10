@@ -1,5 +1,7 @@
 "use client";
+import { calculateDaysOfStay } from "@/backend/helpers/helpers";
 import { IPlace } from "@/backend/models/place";
+import { useNewBookingMutation } from "@/redux/api/bookingApi";
 import React from "react";
 import DatePicker from "react-datepicker";
 
@@ -14,17 +16,35 @@ const PlacesDatePicker = ({ place }: Props) => {
   const [checkOutDate, setCheckOutDate] = React.useState<Date | null>(
     new Date()
   );
+  const [daysOfStay, setDaysOfStay] = React.useState<Number>(0);
+
+  const [newBooking] = useNewBookingMutation();
 
   const handleOnChange = (dates: [Date | null, Date | null] | null) => {
     const [checkInDate, checkOutDate] = dates || [null, null];
-  
+
     setCheckInDate(checkInDate);
     setCheckOutDate(checkOutDate);
-  
+
     if (checkInDate && checkOutDate) {
-      console.log(checkInDate, checkOutDate);
-      // check availability
+      const days = calculateDaysOfStay(checkInDate, checkOutDate);
+      setDaysOfStay(days);
     }
+  };
+
+  const handleBookPlace = async () => {
+    const bookingData = {
+      place: place._id,
+      checkInDate,
+      checkOutDate,
+      daysOfStay,
+      amountPaid: +place?.price?.adults * +daysOfStay,
+      paymentInfo: {
+        id: "STRIPE_ID",
+        status: "PAID",
+      },
+    };
+    const booking = await newBooking(bookingData);
   };
 
   return (
@@ -52,6 +72,9 @@ const PlacesDatePicker = ({ place }: Props) => {
         className="w-100"
         selectsRange
       />
+      <button className="btn btn-primary py-2 w-100 mt-3" onClick={handleBookPlace}>
+        Pay
+      </button>
     </div>
   );
 };

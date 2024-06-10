@@ -1,5 +1,5 @@
 {
-  "name": "next_udemy_mongodb_vercel",
+  "name": "next places project",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -17,6 +17,7 @@
     "bcryptjs": "^2.4.3",
     "bootstrap": "^5.3.2",
     "cloudinary": "^2.1.0",
+    "dayjs": "^1.11.11",
     "mongoose": "^8.1.1",
     "next": "^14.2.3",
     "next-auth": "^4.24.6",
