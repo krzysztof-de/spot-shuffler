@@ -41,7 +41,6 @@ const PlacesDatePicker = ({ place }: Props) => {
       setDaysOfStay(days);
     }
 
-    // check booking availability
     checkBookingAvailability({
       id: place._id,
       checkInDate: checkInDate?.toISOString(),
