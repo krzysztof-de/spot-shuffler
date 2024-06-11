@@ -1,7 +1,11 @@
 "use client";
 import { calculateDaysOfStay } from "@/backend/helpers/helpers";
 import { IPlace } from "@/backend/models/place";
-import { useNewBookingMutation } from "@/redux/api/bookingApi";
+import {
+  useGetBookedDatesQuery,
+  useLazyCheckBookingAvailabilityQuery,
+  useNewBookingMutation,
+} from "@/redux/api/bookingApi";
 import React from "react";
 import DatePicker from "react-datepicker";
 
@@ -19,6 +23,12 @@ const PlacesDatePicker = ({ place }: Props) => {
   const [daysOfStay, setDaysOfStay] = React.useState<Number>(0);
 
   const [newBooking] = useNewBookingMutation();
+  const [checkBookingAvailability, { data }] =
+    useLazyCheckBookingAvailabilityQuery();
+  const isAvailable = data?.isAvailable;
+  const { data: { bookedDates } = {} } = useGetBookedDatesQuery(place._id);
+
+  const excludeDates = bookedDates?.map((date: string) => new Date(date)) || [];
 
   const handleOnChange = (dates: [Date | null, Date | null] | null) => {
     const [checkInDate, checkOutDate] = dates || [null, null];
@@ -30,6 +40,13 @@ const PlacesDatePicker = ({ place }: Props) => {
       const days = calculateDaysOfStay(checkInDate, checkOutDate);
       setDaysOfStay(days);
     }
+
+    // check booking availability
+    checkBookingAvailability({
+      id: place._id,
+      checkInDate: checkInDate?.toISOString(),
+      checkOutDate: checkOutDate?.toISOString(),
+    });
   };
 
   const handleBookPlace = async () => {
@@ -70,9 +87,24 @@ const PlacesDatePicker = ({ place }: Props) => {
         endDate={checkOutDate}
         minDate={new Date()}
         className="w-100"
+        excludeDates={excludeDates}
         selectsRange
       />
-      <button className="btn btn-primary py-2 w-100 mt-3" onClick={handleBookPlace}>
+      {isAvailable === true && (
+        <div className="alert alert-success my-3">
+          Place is available. Book now.
+        </div>
+      )}
+      {isAvailable === false && (
+        <div className="alert alert-danger my-3">
+          Place not available. Try different dates.
+        </div>
+      )}
+
+      <button
+        className="btn btn-primary py-2 w-100 mt-3"
+        onClick={handleBookPlace}
+      >
         Pay
       </button>
     </div>
