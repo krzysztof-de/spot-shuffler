@@ -4,6 +4,7 @@ import Booking from "../models/booking";
 import { IPlace } from "../models/place";
 import dayjs from "dayjs";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import ErrorHandler from "../utils/errorHandler";
 dayjs.extend(isSameOrBefore);
 
 // Create new Booking   =>  /api/bookings
@@ -84,6 +85,33 @@ export const getPlaceBoockedDates = catchAsyncErrors(
 
     return NextResponse.json({
       bookedDates,
+    });
+  }
+);
+
+// Get current user bookings   =>  /api/bookings/me
+export const myBookings = catchAsyncErrors(async (req: NextRequest) => {
+  const bookings = await Booking.find({ user: req.user._id });
+
+  return NextResponse.json({
+    bookings,
+  });
+});
+
+// Get bookings details   =>  /api/bookings/:id
+export const getBookingDetails = catchAsyncErrors(
+  async (req: NextRequest, { params }: { params: { id: string } }) => {
+    const booking = await Booking.findById(params.id);
+
+    if (booking.user !== req.user._id) {
+      throw new ErrorHandler(
+        "You are not allowed to view this booking details",
+        403
+      );
+    }
+
+    return NextResponse.json({
+      booking,
     });
   }
 );
