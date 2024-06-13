@@ -26,7 +26,7 @@ const PlacesDatePicker = ({ place }: Props) => {
   const [checkBookingAvailability, { data }] =
     useLazyCheckBookingAvailabilityQuery();
   const isAvailable = data?.isAvailable;
-  const { data: { bookedDates } = {} } = useGetBookedDatesQuery(place._id);
+  const { data: { bookedDates } = {} } = useGetBookedDatesQuery(place?._id);
 
   const excludeDates = bookedDates?.map((date: string) => new Date(date)) || [];
 

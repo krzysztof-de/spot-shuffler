@@ -8,7 +8,6 @@ import NewReview from "../review/NewReview";
 import Ratings from "../ratings/Ratings";
 import PlacesDatePicker from "./PlacesDatePicker";
 import {
-  APIProvider,
   Map,
   AdvancedMarker,
   Pin,
