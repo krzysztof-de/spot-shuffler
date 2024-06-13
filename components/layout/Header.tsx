@@ -28,11 +28,12 @@ const Header = () => {
         <div className="col-6 col-lg-3 p-0">
           <div className="navbar-brand">
             <a href="/">
-              <img
+              <Image
                 style={{ cursor: "pointer" }}
                 src="/images/fun_places_logo.png"
                 alt="fun flaces"
                 height={48}
+                width={212}
               />
             </a>
           </div>
@@ -69,7 +70,7 @@ const Header = () => {
                 <Link href="/admin/dashboard" className="dropdown-item">
                   Dashboard
                 </Link>
-                <Link href="/trips/me" className="dropdown-item">
+                <Link href="/bookings/me" className="dropdown-item">
                   Upcoming Trips
                 </Link>
                 <Link href="/me/update" className="dropdown-item">
