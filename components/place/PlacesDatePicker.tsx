@@ -4,12 +4,16 @@ import { IPlace } from "@/backend/models/place";
 import {
   useGetBookedDatesQuery,
   useLazyCheckBookingAvailabilityQuery,
+  useLazyStripeCheckoutQuery,
   useNewBookingMutation,
 } from "@/redux/api/bookingApi";
-import React from "react";
+import { useAppSelector } from "@/redux/hooks";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
+import toast from "react-hot-toast";
 
 interface Props {
   place: IPlace;
@@ -21,12 +25,18 @@ const PlacesDatePicker = ({ place }: Props) => {
     new Date()
   );
   const [daysOfStay, setDaysOfStay] = React.useState<Number>(0);
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
+
+  const router = useRouter();
+  const amount = +place?.price?.adults * +daysOfStay;
 
   const [newBooking] = useNewBookingMutation();
   const [checkBookingAvailability, { data }] =
     useLazyCheckBookingAvailabilityQuery();
   const isAvailable = data?.isAvailable;
   const { data: { bookedDates } = {} } = useGetBookedDatesQuery(place?._id);
+  const [stripeCheckout, { error, isLoading, data: checkoutData }] =
+    useLazyStripeCheckoutQuery();
 
   const excludeDates = bookedDates?.map((date: string) => new Date(date)) || [];
 
@@ -41,27 +51,50 @@ const PlacesDatePicker = ({ place }: Props) => {
       setDaysOfStay(days);
     }
 
-    checkBookingAvailability({
-      id: place._id,
-      checkInDate: checkInDate?.toISOString(),
-      checkOutDate: checkOutDate?.toISOString(),
-    });
+    if (checkInDate && checkOutDate)
+      checkBookingAvailability({
+        id: place._id,
+        checkInDate: checkInDate?.toISOString(),
+        checkOutDate: checkOutDate?.toISOString(),
+      });
   };
 
-  const handleBookPlace = async () => {
-    const bookingData = {
-      place: place._id,
-      checkInDate,
-      checkOutDate,
+  useEffect(() => {
+    if (error && "data" in error) {
+      toast.error(error?.data?.errMessage);
+    }
+    if (checkoutData) {
+      router.replace(checkoutData?.url);
+      console.log(checkoutData)
+    }
+  }, [error, checkoutData]);
+
+  const handleBookPlace = () => {
+    const checkoutData = {
+      checkInDate: checkInDate?.toISOString(),
+      checkOutDate: checkOutDate?.toISOString(),
       daysOfStay,
-      amountPaid: +place?.price?.adults * +daysOfStay,
-      paymentInfo: {
-        id: "STRIPE_ID",
-        status: "PAID",
-      },
+      amount,
     };
-    const booking = await newBooking(bookingData);
+
+    stripeCheckout({ id: place?._id, checkoutData });
   };
+
+  // @TODO
+  // const handleBookPlace = async () => {
+  //   const bookingData = {
+  //     place: place._id,
+  //     checkInDate,
+  //     checkOutDate,
+  //     daysOfStay,
+  //     amountPaid: +place?.price?.adults * +daysOfStay,
+  //     paymentInfo: {
+  //       id: "STRIPE_ID",
+  //       status: "PAID",
+  //     },
+  //   };
+  //   const booking = await newBooking(bookingData);
+  // };
 
   return (
     <div className="booking-card shadow p-4">
@@ -74,7 +107,6 @@ const PlacesDatePicker = ({ place }: Props) => {
         </span>
         {place?.price?.notes && (
           <>
-            <hr />
             <span className="small">{place?.price?.notes}</span>
           </>
         )}
@@ -100,12 +132,19 @@ const PlacesDatePicker = ({ place }: Props) => {
         </div>
       )}
 
-      <button
-        className="btn btn-primary py-2 w-100 mt-3"
-        onClick={handleBookPlace}
-      >
-        Pay
-      </button>
+      {isAvailable && !isAuthenticated && (
+        <div className="alert alert-danger my-3">Login to book place.</div>
+      )}
+
+      {isAvailable && isAuthenticated && (
+        <button
+          className="btn btn-primary py-2 w-100 mt-3"
+          onClick={handleBookPlace}
+          disabled={isLoading}
+        >
+          Pay - {amount} PLN
+        </button>
+      )}
     </div>
   );
 };
