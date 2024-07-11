@@ -7,11 +7,7 @@ import ListReviews from "../review/ListReviews";
 import NewReview from "../review/NewReview";
 import Ratings from "../ratings/Ratings";
 import PlacesDatePicker from "./PlacesDatePicker";
-import {
-  Map,
-  AdvancedMarker,
-  Pin,
-} from "@vis.gl/react-google-maps";
+import { Map, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
 import { getMapCenterPoint } from "@/utils/maps";
 
 interface Props {
@@ -78,8 +74,8 @@ const PlaceDetails = ({ data }: Props) => {
         </div>
       </div>
 
-      <NewReview />
-      <ListReviews />
+      <NewReview placeId={place?._id} />
+      <ListReviews reviews={place?.reviews} />
     </div>
   );
 };
