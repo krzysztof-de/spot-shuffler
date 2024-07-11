@@ -1,6 +1,7 @@
 import { categories } from "@/utils/categories";
 import mongoose, { Document, Schema, Types, model, models } from "mongoose";
 import { googleGeocode } from "../utils/geoCoder";
+import { IUser } from "./user";
 
 export interface ILocation {
   coordinates: number[];
@@ -18,7 +19,7 @@ export interface IImage {
 }
 
 export interface IReview {
-  user: Types.ObjectId;
+  user: IUser;
   rating: number;
   comment: string;
 }
@@ -35,7 +36,7 @@ export interface IPlace extends Document {
   images: IImage[];
   category: string;
   reviews: IReview[];
-  user: mongoose.Schema.Types.ObjectId;
+  user: IUser;
   createdAt: Date;
   price: IPrice;
 }

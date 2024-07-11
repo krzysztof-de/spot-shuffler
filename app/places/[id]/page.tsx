@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 
 const getPlace = async (id: string) => {
   const res = await fetch(`${process.env.API_URL}api/places/${id}`, {
-    cache: "no-store",
+    cache: "no-cache",
   });
   return res.json();
 };
