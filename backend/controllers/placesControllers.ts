@@ -156,3 +156,12 @@ export const canReview = catchAsyncErrors(async (req: NextRequest) => {
     canReview,
   });
 });
+
+// Get All places - Admin=> /api/admin/places
+export const allAdminPlaces = catchAsyncErrors(async (req: NextRequest) => {
+  const places = await Place.find();
+
+  return NextResponse.json({
+    places,
+  });
+});
