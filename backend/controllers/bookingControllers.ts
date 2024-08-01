@@ -115,3 +115,130 @@ export const getBookingDetails = catchAsyncErrors(
     });
   }
 );
+
+const getLastSixMonthsSales = async () => {
+  const last6MonthsSales: any = [];
+
+  // Get Current date
+  const currentDate = dayjs();
+
+  async function fetchSalesForMonth(
+    startDate: dayjs.Dayjs,
+    endDate: dayjs.Dayjs
+  ) {
+    const result = await Booking.aggregate([
+      // Stage 1 => Filter the data
+      {
+        $match: {
+          createdAt: { $gte: startDate.toDate(), $lte: endDate.toDate() },
+        },
+      },
+      // Stage 2: Grouping the data
+      {
+        $group: {
+          _id: null,
+          totalSales: { $sum: "$amountPaid" },
+          numOfBookings: { $sum: 1 },
+        },
+      },
+    ]);
+
+    const { totalSales, numOfBookings } =
+      result?.length > 0 ? result[0] : { totalSales: 0, numOfBookings: 0 };
+
+    last6MonthsSales.push({
+      monthName: startDate.format("MMMM"),
+      totalSales,
+      numOfBookings,
+    });
+  }
+
+  for (let i = 0; i < 6; i++) {
+    const startDate = dayjs(currentDate).subtract(i, "months").startOf("month");
+    const endDate = dayjs(currentDate).subtract(i, "months").endOf("month");
+
+    await fetchSalesForMonth(startDate, endDate);
+  }
+
+  return last6MonthsSales;
+};
+
+const getTopPerformingPlaces = async (startDate: Date, endDate: Date) => {
+  const topPlaces = await Booking.aggregate([
+    // Stage 1: Filter documents within start and end date
+    {
+      $match: {
+        createdAt: { $gte: startDate, $lte: endDate },
+      },
+    },
+    // Stage 2: Group documents by place
+    {
+      $group: {
+        _id: "$place",
+        bookingsCount: { $sum: 1 },
+      },
+    },
+
+    // Stage 3: Sort documents by bookingsCount in descending order
+    {
+      $sort: { bookingsCount: -1 },
+    },
+    // Stage 4: Limit the documents
+    {
+      $limit: 3,
+    },
+    // Stage 5: Retrieve additional data from places collection like place name
+    {
+      $lookup: {
+        from: "places",
+        localField: "_id",
+        foreignField: "_id",
+        as: "placeData",
+      },
+    },
+    // Stage 6: Takes placeData and deconstructs into documents
+    {
+      $unwind: "$placeData",
+    },
+    // Stage 7: Shape the output document (include or exclude the fields)
+    {
+      $project: {
+        _id: 0,
+        placeName: "$placeData.name",
+        bookingsCount: 1,
+      },
+    },
+  ]);
+
+  return topPlaces;
+};
+
+// Get sales stats   =>  /api/admin/sales_stats
+export const getSalesStats = catchAsyncErrors(async (req: NextRequest) => {
+  const { searchParams } = new URL(req.url);
+
+  const startDate = new Date(searchParams.get("startDate") as string);
+  const endDate = new Date(searchParams.get("endDate") as string);
+  startDate.setHours(0, 0, 0, 0);
+  endDate.setHours(23, 59, 59, 999);
+
+  const bookings = await Booking.find({
+    createdAt: { $gte: startDate, $lte: endDate },
+  });
+
+  const numberOfBookings = bookings.length;
+  const totalSales = bookings.reduce(
+    (acc, booking) => acc + booking.amountPaid,
+    0
+  );
+
+  const sixMonthSalesData = await getLastSixMonthsSales();
+  const topPlaces = await getTopPerformingPlaces(startDate, endDate);
+
+  return NextResponse.json({
+    numberOfBookings,
+    totalSales,
+    sixMonthSalesData,
+    topPlaces,
+  });
+});
