@@ -22,3 +22,7 @@ router.use(isAuthenticatedUser, authorizeRoles("admin")).post(newPlace);
 export async function POST(request: NextRequest, ctx: RequestContext) {
   return router.run(request, ctx);
 }
+
+export async function GET(request: NextRequest, ctx: RequestContext) {
+  return router.run(request, ctx);
+}

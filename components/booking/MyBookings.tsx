@@ -63,8 +63,6 @@ const seBookings = (bookings: IBooking[]) =>
 const MyBookings = ({ data }: Props) => {
   const bookings = data?.bookings;
 
-  console.log("bookings", bookings);
-
   return (
     <div className="container mt-5">
       <h2>My Bookings</h2>

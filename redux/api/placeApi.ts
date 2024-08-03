@@ -20,7 +20,30 @@ export const placeApi = createApi({
         };
       },
     }),
+    newPlace: builder.mutation({
+      query(body) {
+        return {
+          url: "/admin/places",
+          method: "POST",
+          body,
+        };
+      },
+    }),
+    updatePlace: builder.mutation({
+      query({ body, id }) {
+        return {
+          url: `/admin/places/${id}`,
+          method: "PUT",
+          body,
+        };
+      },
+    }),
   }),
 });
 
-export const { usePostReviewMutation, useCanUserReviewQuery } = placeApi;
+export const {
+  usePostReviewMutation,
+  useCanUserReviewQuery,
+  useNewPlaceMutation,
+  useUpdatePlaceMutation,
+} = placeApi;

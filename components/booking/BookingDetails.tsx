@@ -102,7 +102,7 @@ export const BookingDetails = ({ data }: BookingInputProps) => {
               </div>
 
               <div className="col-4 col-lg-2 mt-4 mt-lg-0">
-                <p>{`${booking?.place?.price?.adults} PLN`}</p>
+                <p>{`${booking?.place?.price?.regular} PLN`}</p>
               </div>
 
               <div className="col-4 col-lg-3 mt-4 mt-lg-0">

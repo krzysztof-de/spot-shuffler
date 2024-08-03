@@ -11,8 +11,8 @@ const menuItem = [
     icon: "fas fa-tachometer-alt",
   },
   {
-    name: "Rooms",
-    url: "/admin/rooms",
+    name: "Places",
+    url: "/admin/places",
     icon: "fas fa-hotel",
   },
   {

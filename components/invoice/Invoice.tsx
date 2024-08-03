@@ -93,7 +93,7 @@ const Invoice = ({ data }: BookingInputProps) => {
                   <tr>
                     <td className="service">{booking?.place?.name}</td>
                     <td className="desc">
-                      {booking?.place?.price?.adults} PLN
+                      {booking?.place?.price?.regular} PLN
                     </td>
                     <td className="unit">
                       {new Date(booking?.checkInDate).toLocaleString()}

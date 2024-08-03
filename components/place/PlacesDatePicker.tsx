@@ -28,7 +28,7 @@ const PlacesDatePicker = ({ place }: Props) => {
   const { isAuthenticated } = useAppSelector((state) => state.auth);
 
   const router = useRouter();
-  const amount = +place?.price?.adults * +daysOfStay;
+  const amount = +place?.price?.regular * +daysOfStay;
 
   const [newBooking] = useNewBookingMutation();
   const [checkBookingAvailability, { data }] =
@@ -87,7 +87,7 @@ const PlacesDatePicker = ({ place }: Props) => {
   //     checkInDate,
   //     checkOutDate,
   //     daysOfStay,
-  //     amountPaid: +place?.price?.adults * +daysOfStay,
+  //     amountPaid: +place?.price?.regular * +daysOfStay,
   //     paymentInfo: {
   //       id: "STRIPE_ID",
   //       status: "PAID",
@@ -100,10 +100,10 @@ const PlacesDatePicker = ({ place }: Props) => {
     <div className="booking-card shadow p-4">
       <p className="place-price">
         <span className="d-block">
-          {place?.price?.children && `${place?.price?.children} PLN / children`}
+          {place?.price?.reduced && `${place?.price?.reduced} PLN / small one`}
         </span>
         <span className="d-block">
-          {place?.price?.adults && `${place?.price?.adults} PLN / adults`}
+          {place?.price?.regular && `${place?.price?.regular} PLN / grown one`}
         </span>
         {place?.price?.notes && (
           <>

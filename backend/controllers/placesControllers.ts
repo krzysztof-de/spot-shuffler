@@ -35,10 +35,9 @@ export const allPlaces = catchAsyncErrors(async (req: NextRequest) => {
 // Create new place => /api/admin/places
 export const newPlace = catchAsyncErrors(async (req: NextRequest) => {
   const body = await req.json();
+  body.user = req.user._id;
 
-  console.log("req body", body);
   const place = await Place.create(body);
-  console.log("returned place", place);
   return NextResponse.json({
     success: true,
     place,
@@ -157,7 +156,7 @@ export const canReview = catchAsyncErrors(async (req: NextRequest) => {
   });
 });
 
-// Get All places - Admin=> /api/admin/places
+// Get All places - Admin => /api/admin/places
 export const allAdminPlaces = catchAsyncErrors(async (req: NextRequest) => {
   const places = await Place.find();
 
