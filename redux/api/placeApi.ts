@@ -38,6 +38,15 @@ export const placeApi = createApi({
         };
       },
     }),
+    uploadPlaceImages: builder.mutation({
+      query({ body, id }) {
+        return {
+          url: `/admin/places/${id}/upload_images`,
+          method: "PUT",
+          body,
+        };
+      },
+    }),
   }),
 });
 
@@ -46,4 +55,5 @@ export const {
   useCanUserReviewQuery,
   useNewPlaceMutation,
   useUpdatePlaceMutation,
+  useUploadPlaceImagesMutation
 } = placeApi;

@@ -1,9 +1,9 @@
 import Error from "@/app/error";
-import UpdatePlace from "@/components/admin/UpdatePlace";
+import UploadPlaceImages from "@/components/admin/UploadPlaceImages";
 import { getAuthHeader } from "@/helpers/authHeader";
 
 export const metadata = {
-  title: "Update Place - ADIMN",
+  title: "Upload Place Images - ADMIN",
 };
 
 export const dynamic = "force-dynamic";
@@ -17,7 +17,7 @@ const getPlace = async (id: string) => {
   return res.json();
 };
 
-export default async function AdminUpdatePlacePage({
+export default async function AdminUploadImagesPage({
   params,
 }: {
   params: { id: string };
@@ -28,5 +28,5 @@ export default async function AdminUpdatePlacePage({
     return <Error error={data} />;
   }
 
-  return <UpdatePlace data={data} />;
+  return <UploadPlaceImages data={data} />;
 }

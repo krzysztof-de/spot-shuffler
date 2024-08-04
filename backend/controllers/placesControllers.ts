@@ -4,6 +4,7 @@ import ErrorHandler from "../utils/errorHandler";
 import { catchAsyncErrors } from "../middlewares/catchAsyncErrors";
 import APIFilters from "../utils/apiFilters";
 import Booking from "../models/booking";
+import { upload_file } from "../utils/cloudinary";
 
 // Get all places => /api/places
 export const allPlaces = catchAsyncErrors(async (req: NextRequest) => {
@@ -73,6 +74,29 @@ export const updatePlace = catchAsyncErrors(
     place = await Place.findByIdAndUpdate(params.id, body, {
       new: true, //returns updated place
     });
+
+    return NextResponse.json({
+      succes: true,
+      place,
+    });
+  }
+);
+
+// Upload Place Images => /api/admin/places/:id/upload_images
+export const uploadPlaceImages = catchAsyncErrors(
+  async (req: NextRequest, { params }: { params: { id: string } }) => {
+    const place = await Place.findById(params.id);
+    const body = await req.json();
+
+    if (!place) {
+      throw new ErrorHandler("Place not found", 404);
+    }
+
+    const uploader = async (image: string) => upload_file(image, "places/places");
+    const url = await Promise.all((body.images).map(uploader));
+
+    place?.images?.push(...url);
+    await place?.save();
 
     return NextResponse.json({
       succes: true,

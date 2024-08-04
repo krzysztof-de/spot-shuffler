@@ -1,3 +1,5 @@
+import toast from "react-hot-toast";
+
 interface MapCenterPoint {
   lat: number;
   lng: number;
@@ -19,3 +21,7 @@ export const getMapCenterPoint = ({
 
   return { lat, lng };
 };
+
+export const revalidateTag = (tag: string) => {
+  toast.success(`fake revalidating tag: ${tag}`);
+}
