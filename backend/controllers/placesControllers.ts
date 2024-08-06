@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import Place, { IPlace, IReview } from "../models/place";
+import Place, { IImage, IPlace, IReview } from "../models/place";
 import ErrorHandler from "../utils/errorHandler";
 import { catchAsyncErrors } from "../middlewares/catchAsyncErrors";
 import APIFilters from "../utils/apiFilters";
 import Booking from "../models/booking";
-import { upload_file } from "../utils/cloudinary";
+import { delete_file, upload_file } from "../utils/cloudinary";
 
 // Get all places => /api/places
 export const allPlaces = catchAsyncErrors(async (req: NextRequest) => {
@@ -92,11 +92,42 @@ export const uploadPlaceImages = catchAsyncErrors(
       throw new ErrorHandler("Place not found", 404);
     }
 
-    const uploader = async (image: string) => upload_file(image, "places/places");
-    const url = await Promise.all((body.images).map(uploader));
+    const uploader = async (image: string) =>
+      upload_file(image, "places/places");
+    const urls = await Promise.all(body.images.map(uploader));
 
-    place?.images?.push(...url);
-    await place?.save();
+    place?.images?.push(...urls);
+    await place.save();
+
+    return NextResponse.json({
+      succes: true,
+      place,
+    });
+  }
+);
+
+// Delete place pmage => /api/admin/places/:id/delete_image
+export const deletePlaceImage = catchAsyncErrors(
+  async (req: NextRequest, { params }: { params: { id: string } }) => {
+    const place = await Place.findById(params.id);
+    const body = await req.json();
+
+    if (!place) {
+      throw new ErrorHandler("Place not found", 404);
+    }
+    const isDeleted = await delete_file(body?.imgId);
+
+    if (!isDeleted) {
+      throw new ErrorHandler("Image not found", 404);
+    }
+
+    if (isDeleted) {
+      place.images = place.images.filter(
+        (img: IImage) => img.public_id !== body.imgId
+      );
+    }
+
+    await place.save();
 
     return NextResponse.json({
       succes: true,
@@ -112,6 +143,10 @@ export const deletePlace = catchAsyncErrors(
 
     if (!place) {
       throw new ErrorHandler("Place not found", 404);
+    }
+    // Delete place images
+    for (let i = 0; i < place?.length; i++) {
+      await delete_file(place?.images[i].public_id);
     }
 
     // TODO delete images assosiated

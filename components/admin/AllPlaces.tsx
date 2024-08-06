@@ -1,8 +1,11 @@
 "use client";
 
 import { IPlace } from "@/backend/models/place";
+import { useDeletePlaceMutation } from "@/redux/api/placeApi";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
+import toast from "react-hot-toast";
 
 interface InputProps {
   data: {
@@ -11,6 +14,21 @@ interface InputProps {
 }
 
 const AllPlaces = ({ data }: InputProps) => {
+  const [deletePlace, { error, isLoading, isSuccess }] =
+    useDeletePlaceMutation();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (error && "data" in error) {
+      toast.error(error?.data?.errMessage);
+    }
+
+    if (isSuccess) {
+      router.refresh();
+      toast.success("Place deleted");
+    }
+  }, [error, isSuccess]);
+
   const columns = [
     {
       label: "Place ID",
@@ -31,6 +49,10 @@ const AllPlaces = ({ data }: InputProps) => {
 
   const places = data?.places;
 
+  const deletePlaceHandler = (id: string) => {
+    deletePlace(id);
+  };
+
   const mapPlaces = (places: IPlace[]) =>
     places?.map((place) => ({
       id: place._id,
@@ -49,7 +71,10 @@ const AllPlaces = ({ data }: InputProps) => {
           >
             <i className="fa fa-images"></i>
           </Link>
-          <button className="btn btn-outline-danger ms-2 btn-sm">
+          <button
+            className="btn btn-outline-danger ms-2 btn-sm"
+            onClick={() => deletePlaceHandler(place._id)}
+          >
             <i className="fa fa-trash"></i>
           </button>
         </div>

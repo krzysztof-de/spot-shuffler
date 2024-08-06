@@ -1,6 +1,9 @@
 "use client";
 import { IImage, IPlace } from "@/backend/models/place";
-import { useUploadPlaceImagesMutation } from "@/redux/api/placeApi";
+import {
+  useDeletePlaceImageMutation,
+  useUploadPlaceImagesMutation,
+} from "@/redux/api/placeApi";
 import { useRouter } from "next/navigation";
 import React, {
   ChangeEvent,
@@ -13,7 +16,6 @@ import React, {
 } from "react";
 import toast from "react-hot-toast";
 import ButtonLoader from "../layout/ButtonLoader";
-import Image from "next/image";
 import { revalidateTag } from "@/utils/maps";
 
 interface Props {
@@ -38,6 +40,15 @@ const UploadPlaceImages = ({ data }: Props) => {
   const [uploadPlaceImages, { error, isLoading, isSuccess }] =
     useUploadPlaceImagesMutation();
 
+  const [
+    deletePlaceImage,
+    {
+      error: deleteError,
+      isLoading: isDeleteLoading,
+      isSuccess: isDeleteSuccess,
+    },
+  ] = useDeletePlaceImageMutation();
+
   useEffect(() => {
     if (error && "data" in error) {
       toast.error(error?.data?.errMessage);
@@ -51,6 +62,18 @@ const UploadPlaceImages = ({ data }: Props) => {
       router.push(`/admin/places/${data.place.id}`);
     }
   }, [error, isSuccess]);
+
+  useEffect(() => {
+    if (deleteError && "data" in deleteError) {
+      toast.error(deleteError?.data?.errMessage);
+    }
+
+    if (isDeleteSuccess) {
+      revalidateTag("PlaceDetails");
+      router.refresh();
+      toast.success("Images deleted successfully");
+    }
+  }, [deleteError, isDeleteSuccess]);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const files = Array.from(e.target.files || []);
@@ -72,7 +95,7 @@ const UploadPlaceImages = ({ data }: Props) => {
     });
   };
 
-  const handleSubmit: MouseEventHandler<HTMLButtonElement> = (e) => {
+  const handleUpload: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
     uploadPlaceImages({ id: data.place._id, body: { images } });
   };
@@ -81,6 +104,10 @@ const UploadPlaceImages = ({ data }: Props) => {
     const filteredImages = images.filter((img) => img !== imgUrl);
     setImages(filteredImages);
     setImagesPreview(filteredImages);
+  };
+
+  const handleImageDelete = (imgId: string) => {
+    deletePlaceImage({ id: data?.place?._id, body: { imgId } });
   };
 
   const handleResetFileInput = () => {
@@ -164,8 +191,8 @@ const UploadPlaceImages = ({ data }: Props) => {
                             borderColor: "#dc3545",
                           }}
                           className="btn btn-block btn-danger cross-button mt-1 py-0"
-                          // onClick={() => handleImageDelete(img.public_id)}
-                          // disabled={isDeleteLoading || isLoading}
+                          onClick={() => handleImageDelete(img.public_id)}
+                          disabled={isDeleteLoading || isLoading}
                         >
                           <i className="fa fa-trash"></i>
                         </button>
@@ -181,8 +208,8 @@ const UploadPlaceImages = ({ data }: Props) => {
             id="register_button"
             type="submit"
             className="btn btn-primary mt-2 form-btn w-100 py-2"
-            onClick={handleSubmit}
-            // disabled={isLoading || isDeleteLoading}
+            onClick={handleUpload}
+            disabled={isLoading || isDeleteLoading}
           >
             {isLoading ? <ButtonLoader /> : "Upload"}
           </button>

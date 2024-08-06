@@ -47,6 +47,23 @@ export const placeApi = createApi({
         };
       },
     }),
+    deletePlaceImage: builder.mutation({
+      query({ body, id }) {
+        return {
+          url: `/admin/places/${id}/delete_image`,
+          method: "PUT",
+          body,
+        };
+      },
+    }),
+    deletePlace: builder.mutation({
+      query(id ) {
+        return {
+          url: `/admin/places/${id}`,
+          method: "DELETE",
+        };
+      },
+    }),
   }),
 });
 
@@ -55,5 +72,7 @@ export const {
   useCanUserReviewQuery,
   useNewPlaceMutation,
   useUpdatePlaceMutation,
-  useUploadPlaceImagesMutation
+  useUploadPlaceImagesMutation,
+  useDeletePlaceImageMutation,
+  useDeletePlaceMutation,
 } = placeApi;
