@@ -242,3 +242,12 @@ export const getSalesStats = catchAsyncErrors(async (req: NextRequest) => {
     topPlaces,
   });
 });
+
+// Get admin bookings   =>  /api/admin/bookings
+export const allAdminBookings = catchAsyncErrors(async (req: NextRequest) => {
+  const bookings = await Booking.find();
+
+  return NextResponse.json({
+    bookings,
+  });
+});
