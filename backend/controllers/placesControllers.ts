@@ -223,3 +223,44 @@ export const allAdminPlaces = catchAsyncErrors(async (req: NextRequest) => {
     places,
   });
 });
+
+// Get place reviews - Admin => /api/admin/places/reviews
+export const getPlaceReviews = catchAsyncErrors(async (req: NextRequest) => {
+  const { searchParams } = new URL(req.url);
+
+  const place = await Place.findById(searchParams.get("placeId"));
+
+  return NextResponse.json({
+    reviews: place?.reviews,
+  });
+});
+
+// Delete place review - Admin => /api/admin/places/reviews
+export const deletePlaceReview = catchAsyncErrors(async (req: NextRequest) => {
+  const { searchParams } = new URL(req.url);
+
+  const placeId = searchParams.get("placeId");
+  const reviewId = searchParams.get("id");
+
+  const place = await Place.findById(placeId);
+
+  const reviews = place?.reviews.filter(
+    (review: IReview) => review._id?.toString() !== reviewId
+  );
+
+  const numOfReviews = reviews.length;
+
+  const ratings =
+    numOfReviews === 0
+      ? 0
+      : place?.reviews.reduce(
+          (acc: number, item: { rating: number }) => item.rating + acc,
+          0
+        ) / numOfReviews;
+
+  await Place.findByIdAndUpdate(placeId, { reviews, ratings, numOfReviews });
+
+  return NextResponse.json({
+    success: true,
+  });
+});

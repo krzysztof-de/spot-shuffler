@@ -13,12 +13,12 @@ export interface IPrice {
   notes: string;
 }
 
-export interface IImage {
+export interface IImage extends Document {
   public_id: string;
   url: string;
 }
 
-export interface IReview {
+export interface IReview extends Document {
   user: IUser;
   rating: number;
   comment: string;

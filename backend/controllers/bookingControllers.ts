@@ -103,7 +103,10 @@ export const getBookingDetails = catchAsyncErrors(
   async (req: NextRequest, { params }: { params: { id: string } }) => {
     const booking = await Booking.findById(params.id).populate("user place");
 
-    if (booking.user?._id?.toString() !== req.user._id) {
+    if (
+      booking.user?._id?.toString() !== req.user._id &&
+      req.user.role !== "admin"
+    ) {
       throw new ErrorHandler(
         "You are not allowed to view this booking details",
         403
@@ -251,3 +254,20 @@ export const allAdminBookings = catchAsyncErrors(async (req: NextRequest) => {
     bookings,
   });
 });
+
+// Delete booking   =>  /api/admin/bookings/:id
+export const deleteBooking = catchAsyncErrors(
+  async (req: NextRequest, { params }: { params: { id: string } }) => {
+    const booking = await Booking.findById(params.id);
+
+    if (!booking) {
+      throw new ErrorHandler("Booking not found with this ID", 404);
+    }
+
+    await booking.deleteOne();
+
+    return NextResponse.json({
+      success: true,
+    });
+  }
+);

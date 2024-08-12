@@ -1,14 +1,14 @@
-'use client';
+"use client";
 import React, { useEffect } from "react";
-import { IBooking } from "@/backend/models/booking";
 import Link from "next/link";
-import { useDeleteBookingMutation } from "@/redux/api/bookingApi";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { IUser } from "@/backend/models/user";
+import { useDeleteUserMutation } from "@/redux/api/userApi";
 
 interface Props {
   data: {
-    bookings: IBooking[];
+    users: IUser[];
   };
 }
 
@@ -19,13 +19,18 @@ const columns = [
     sort: "asc",
   },
   {
-    label: "Check In",
-    field: "checkIn",
+    label: "Name",
+    field: "name",
     sort: "asc",
   },
   {
-    label: "Check Out",
-    field: "checkOut",
+    label: "Email",
+    field: "email",
+    sort: "asc",
+  },
+  {
+    label: "Role",
+    field: "role",
     sort: "asc",
   },
   {
@@ -35,12 +40,11 @@ const columns = [
   },
 ];
 
-const AllBookings = ({ data }: Props) => {
-  const bookings = data?.bookings;
+const AllUsers = ({ data }: Props) => {
+  const users = data?.users;
   const router = useRouter();
 
-  const [deleteBooking, { error, isLoading, isSuccess }] =
-    useDeleteBookingMutation();
+  const [deleteUser, { error, isLoading, isSuccess }] = useDeleteUserMutation();
 
   useEffect(() => {
     if (error && "data" in error) {
@@ -49,37 +53,32 @@ const AllBookings = ({ data }: Props) => {
 
     if (isSuccess) {
       router.refresh();
-      toast.success("Booking deleted");
+      toast.success("User deleted");
     }
   }, [error, isSuccess]);
 
-  const handleDeleteBooking = (id: string) => {
-    deleteBooking(id);
+  const handleDeleteUser = (id: string) => {
+    deleteUser(id);
   };
 
-  const setBookings = (bookings: IBooking[]) =>
-    bookings?.map((booking) => ({
-      id: booking._id,
-      checkin: booking.checkInDate,
-      checkout: booking.checkOutDate,
+  const setUsers = (users: IUser[]) =>
+    users?.map((user) => ({
+      id: user?._id,
+      name: user?.name,
+      email: user?.email,
+      role: user?.role,
       actions: (
         <div className="d-flex justify-content-center">
           <Link
-            href={`/bookings/${booking._id}`}
-            className="btn btn-primary btn-sm me-2"
+            href={`/admin/users/${user?._id}`}
+            className="btn btn-primary btn-sm"
           >
-            View
-          </Link>
-          <Link
-            href={`/bookings/invoice/${booking._id}`}
-            className="btn btn-danger btn-sm"
-          >
-            Invoice
+            <i className="fa fa-pencil"></i>
           </Link>
           <button
             className="btn btn-outline-danger mx-2"
             disabled={isLoading}
-            onClick={() => handleDeleteBooking(booking?._id)}
+            onClick={() => handleDeleteUser(user?._id)}
           >
             <i className="fa fa-trash"></i>
           </button>
@@ -89,7 +88,7 @@ const AllBookings = ({ data }: Props) => {
 
   return (
     <div className="container mt-5">
-      <h2>{bookings?.length} Bookings</h2>
+      <h2>{users?.length} Users</h2>
       <table className="table table-striped">
         <thead>
           <tr>
@@ -99,11 +98,12 @@ const AllBookings = ({ data }: Props) => {
           </tr>
         </thead>
         <tbody>
-          {setBookings(bookings)?.map((row) => (
+          {setUsers(users)?.map((row) => (
             <tr key={row.id}>
               <td>{row.id}</td>
-              <td>{new Date(row.checkin).toLocaleDateString()}</td>
-              <td>{new Date(row.checkout).toLocaleDateString()}</td>
+              <td>{row.name}</td>
+              <td>{row.email}</td>
+              <td>{row.role}</td>
               <td>{row.actions}</td>
             </tr>
           ))}
@@ -113,4 +113,4 @@ const AllBookings = ({ data }: Props) => {
   );
 };
 
-export default AllBookings;
+export default AllUsers;

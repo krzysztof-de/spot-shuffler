@@ -3,6 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const placeApi = createApi({
   reducerPath: "placeApi",
   baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
+  tagTypes: ["Reviews"],
   endpoints: (builder) => ({
     canUserReview: builder.query({
       query(id) {
@@ -57,12 +58,29 @@ export const placeApi = createApi({
       },
     }),
     deletePlace: builder.mutation({
-      query(id ) {
+      query(id) {
         return {
           url: `/admin/places/${id}`,
           method: "DELETE",
         };
       },
+    }),
+    getPlaceReviews: builder.query({
+      query(id) {
+        return {
+          url: `admin/places/reviews?placeId=${id}`,
+        };
+      },
+      providesTags: ["Reviews"],
+    }),
+    deleteReview: builder.mutation({
+      query({ id, placeId }) {
+        return {
+          url: `/admin/places/reviews/?id=${id}&placeId=${placeId}`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: ["Reviews"],
     }),
   }),
 });
@@ -75,4 +93,6 @@ export const {
   useUploadPlaceImagesMutation,
   useDeletePlaceImageMutation,
   useDeletePlaceMutation,
+  useLazyGetPlaceReviewsQuery,
+  useDeleteReviewMutation
 } = placeApi;

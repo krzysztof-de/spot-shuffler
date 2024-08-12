@@ -1,7 +1,9 @@
+'use client'
 import { IBooking } from "@/backend/models/booking";
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useAppSelector } from "@/redux/hooks";
 
 export interface BookingInputProps {
   data: {
@@ -10,9 +12,9 @@ export interface BookingInputProps {
 }
 export const BookingDetails = ({ data }: BookingInputProps) => {
   const booking = data?.booking;
+  const { user } = useAppSelector((state) => state.auth);
   const isPaid = booking?.paymentInfo?.status === "PAID";
 
-  console.log("booking:", booking);
   return (
     <div className="container">
       <div className="row d-flex justify-content-center">
@@ -78,38 +80,56 @@ export const BookingDetails = ({ data }: BookingInputProps) => {
                   </b>
                 </td>
               </tr>
+              {user?.role === "admin" && (
+                <tr>
+                  <th scope="row">Stripe ID:</th>
+                  <td>
+                    <b>
+                      {booking?.paymentInfo?.id
+                        ? booking?.paymentInfo?.id
+                        : "-"}
+                    </b>
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
 
           <h4 className="mt-5 mb-4">Booked Room:</h4>
 
           <hr />
-          <div className="cart-item my-1">
-            <div className="row my-5">
-              <div className="col-4 col-lg-2">
-                <Image
-                  src={booking?.place?.images[0].url}
-                  alt={booking?.place?.name}
-                  height={45}
-                  width={65}
-                />
-              </div>
 
-              <div className="col-5 col-lg-5">
-                <Link href={`/places/${booking?.place?._id}`}>
-                  {booking?.place?.name}
-                </Link>
-              </div>
+          {booking?.place ? (
+            <div className="cart-item my-1">
+              <div className="row my-5">
+                <div className="col-4 col-lg-2">
+                  <Image
+                    src={booking?.place?.images[0].url}
+                    alt={booking?.place?.name}
+                    height={45}
+                    width={65}
+                  />
+                </div>
 
-              <div className="col-4 col-lg-2 mt-4 mt-lg-0">
-                <p>{`${booking?.place?.price?.regular} PLN`}</p>
-              </div>
+                <div className="col-5 col-lg-5">
+                  <Link href={`/places/${booking?.place?._id}`}>
+                    {booking?.place?.name}
+                  </Link>
+                </div>
 
-              <div className="col-4 col-lg-3 mt-4 mt-lg-0">
-                <p>{`${booking?.daysOfStay} Day(s)`}</p>
+                <div className="col-4 col-lg-2 mt-4 mt-lg-0">
+                  <p>{`${booking?.place?.price?.regular} PLN`}</p>
+                </div>
+
+                <div className="col-4 col-lg-3 mt-4 mt-lg-0">
+                  <p>{`${booking?.daysOfStay} Day(s)`}</p>
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="alert alert-danger"> Place no longer exists</div>
+          )}
+
           <hr />
         </div>
       </div>

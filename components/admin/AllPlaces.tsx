@@ -83,7 +83,15 @@ const AllPlaces = ({ data }: InputProps) => {
 
   return (
     <div>
-      <h1 className="my-4">{`${places?.length} Places`}</h1>
+      <h1 className="my-5 position-relative">
+        {`${places?.length} Places`}
+        <Link
+          href="/admin/places/new"
+          className="mt-0 btn btn-primary text-white position-absolute end-0 form-btn"
+        >
+          Create Place
+        </Link>
+      </h1>
       <table className="table table-striped">
         <thead>
           <tr>
