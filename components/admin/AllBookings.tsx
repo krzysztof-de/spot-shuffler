@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useDeleteBookingMutation } from "@/redux/api/bookingApi";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { CustomError } from "@/interfaces/customError";
 
 interface Props {
   data: {
@@ -44,7 +45,8 @@ const AllBookings = ({ data }: Props) => {
 
   useEffect(() => {
     if (error && "data" in error) {
-      toast.error(error?.data?.errMessage);
+      const customError = error?.data as CustomError;
+      toast.error(customError?.errMessage);
     }
 
     if (isSuccess) {

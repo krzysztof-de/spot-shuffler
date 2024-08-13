@@ -8,6 +8,7 @@ import { categories } from "@/utils/categories";
 import { useUpdatePlaceMutation } from "@/redux/api/placeApi";
 import toast from "react-hot-toast";
 import updatePlaceDetails from "@/app/actions";
+import { CustomError } from "@/interfaces/customError";
 
 interface Props {
   data: {
@@ -49,7 +50,8 @@ const UpdatePlace = ({ data }: Props) => {
 
   useEffect(() => {
     if (error && "data" in error) {
-      toast.error(error?.data?.errMessage);
+      const customError = error?.data as CustomError;
+      toast.error(customError?.errMessage);
     }
 
     if (isSuccess) {

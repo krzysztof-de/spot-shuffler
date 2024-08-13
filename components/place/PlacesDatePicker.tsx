@@ -1,6 +1,7 @@
 "use client";
 import { calculateDaysOfStay } from "@/backend/helpers/helpers";
 import { IPlace } from "@/backend/models/place";
+import { CustomError } from "@/interfaces/customError";
 import {
   useGetBookedDatesQuery,
   useLazyCheckBookingAvailabilityQuery,
@@ -61,7 +62,8 @@ const PlacesDatePicker = ({ place }: Props) => {
 
   useEffect(() => {
     if (error && "data" in error) {
-      toast.error(error?.data?.errMessage);
+      const customError = error?.data as CustomError;
+      toast.error(customError?.errMessage);
     }
     if (checkoutData) {
       router.replace(checkoutData?.url);

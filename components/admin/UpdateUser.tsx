@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import ButtonLoader from "../layout/ButtonLoader";
 import { useUpdateUserMutation } from "@/redux/api/userApi";
 import toast from "react-hot-toast";
+import { CustomError } from "@/interfaces/customError";
 
 interface Props {
   data: {
@@ -35,7 +36,8 @@ const UpdateUser = ({ data }: Props) => {
 
   useEffect(() => {
     if (error && "data" in error) {
-      toast.error(error?.data?.errMessage);
+      const customError = error?.data as CustomError;
+      toast.error(customError?.errMessage);
     }
 
     if (isSuccess) {

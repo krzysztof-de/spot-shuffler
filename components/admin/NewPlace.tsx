@@ -7,6 +7,7 @@ import { IPlace } from "@/backend/models/place";
 import { categories } from "@/utils/categories";
 import { useNewPlaceMutation } from "@/redux/api/placeApi";
 import toast from "react-hot-toast";
+import { CustomError } from "@/interfaces/customError";
 
 const NewPlace = () => {
   const [placeDetails, setPlaceDetails] = useState({
@@ -39,7 +40,8 @@ const NewPlace = () => {
 
   useEffect(() => {
     if (error && "data" in error) {
-      toast.error(error?.data?.errMessage);
+      const customError = error?.data as CustomError;
+      toast.error(customError?.errMessage);
     }
 
     if (isSuccess) {

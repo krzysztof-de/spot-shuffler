@@ -1,6 +1,7 @@
 "use client";
 
 import { IPlace } from "@/backend/models/place";
+import { CustomError } from "@/interfaces/customError";
 import { useDeletePlaceMutation } from "@/redux/api/placeApi";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -20,7 +21,8 @@ const AllPlaces = ({ data }: InputProps) => {
 
   useEffect(() => {
     if (error && "data" in error) {
-      toast.error(error?.data?.errMessage);
+      const customError = error?.data as CustomError;
+      toast.error(customError?.errMessage);
     }
 
     if (isSuccess) {

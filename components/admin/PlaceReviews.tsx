@@ -1,5 +1,6 @@
 "use client";
 import { IReview } from "@/backend/models/place";
+import { CustomError } from "@/interfaces/customError";
 import {
   useDeleteReviewMutation,
   useLazyGetPlaceReviewsQuery,
@@ -73,7 +74,8 @@ const PlaceReviews = () => {
 
   useEffect(() => {
     if (error && "data" in error) {
-      toast.error(error?.data?.errMessage);
+      const customError = error?.data as CustomError;
+      toast.error(customError?.errMessage);
     }
 
     if (isSuccess) {

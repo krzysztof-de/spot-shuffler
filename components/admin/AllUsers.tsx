@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { IUser } from "@/backend/models/user";
 import { useDeleteUserMutation } from "@/redux/api/userApi";
+import { CustomError } from "@/interfaces/customError";
 
 interface Props {
   data: {
@@ -48,7 +49,8 @@ const AllUsers = ({ data }: Props) => {
 
   useEffect(() => {
     if (error && "data" in error) {
-      toast.error(error?.data?.errMessage);
+      const customError = error?.data as CustomError;
+      toast.error(customError?.errMessage);
     }
 
     if (isSuccess) {

@@ -17,6 +17,7 @@ import React, {
 import toast from "react-hot-toast";
 import ButtonLoader from "../layout/ButtonLoader";
 import { revalidateTag } from "@/utils/maps";
+import { CustomError } from "@/interfaces/customError";
 
 interface Props {
   data: {
@@ -51,7 +52,8 @@ const UploadPlaceImages = ({ data }: Props) => {
 
   useEffect(() => {
     if (error && "data" in error) {
-      toast.error(error?.data?.errMessage);
+      const customError = error?.data as CustomError;
+      toast.error(customError?.errMessage);
     }
 
     if (isSuccess) {
@@ -65,7 +67,8 @@ const UploadPlaceImages = ({ data }: Props) => {
 
   useEffect(() => {
     if (deleteError && "data" in deleteError) {
-      toast.error(deleteError?.data?.errMessage);
+      const customError = deleteError?.data as CustomError;
+      toast.error(customError?.errMessage);
     }
 
     if (isDeleteSuccess) {
