@@ -8,17 +8,17 @@ export interface ILocation {
   formattedAddress: string;
 }
 export interface IPrice {
-  children: number;
-  adults: number;
+  reduced: number;
+  regular: number;
   notes: string;
 }
 
-export interface IImage {
+export interface IImage extends Document {
   public_id: string;
   url: string;
 }
 
-export interface IReview {
+export interface IReview extends Document {
   user: IUser;
   rating: number;
   comment: string;
@@ -57,13 +57,13 @@ const placeSchema: Schema<IPlace> = new Schema({
     required: [false, "Please enter place url link"],
   },
   price: {
-    children: {
+    reduced: {
       type: Number,
-      required: [false, "Please enter valid price for kids"],
+      required: [false, "Please enter valid reduced price"],
     },
-    adults: {
+    regular: {
       type: Number,
-      required: [false, "Please enter valid price for adult"],
+      required: [false, "Please enter valid regular price"],
     },
     notes: {
       type: String,

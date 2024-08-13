@@ -11,8 +11,8 @@ const menuItem = [
     icon: "fas fa-tachometer-alt",
   },
   {
-    name: "Rooms",
-    url: "/admin/rooms",
+    name: "Places",
+    url: "/admin/places",
     icon: "fas fa-hotel",
   },
   {
@@ -47,9 +47,9 @@ const AdminSidebar = () => {
           key={index}
           href={menuItem.url}
           className={`fw-bold list-group-item list-group-item-action ${
-            activeMenuItem === menuItem.url ? "active" : ""
+            activeMenuItem.includes(menuItem.url) ? "active" : ""
           }`}
-          aria-current={activeMenuItem === menuItem.url}
+          aria-current={activeMenuItem.includes(menuItem.url)}
           onClick={() => handleMenuItemClick(menuItem.url)}
         >
           <i className={`${menuItem.icon} fa-fw pe-2`}></i> {menuItem.name}

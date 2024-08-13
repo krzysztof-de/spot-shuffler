@@ -5,8 +5,9 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import ButtonLoader from "../layout/ButtonLoader";
+import { CustomError } from "@/interfaces/customError";
 
-const UpdatePassword = () => {
+const UpdatePassword: React.FC  = () => {
   const [password, setPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const router = useRouter();
@@ -16,7 +17,8 @@ const UpdatePassword = () => {
 
   useEffect(() => {
     if (error && "data" in error) {
-      toast.error(error?.data?.errMessage);
+      const customError = error?.data as CustomError;
+      toast.error(customError?.errMessage);
     }
 
     if (isSuccess) {

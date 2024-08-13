@@ -9,10 +9,16 @@ export const dynamic = "force-dynamic";
 const getPlaces = async (searchParams: string) => {
   const urlParams = new URLSearchParams(searchParams);
   const queryString = urlParams.toString();
+
+try {
   const res = await fetch(`${process.env.API_URL}api/places?${queryString}`, {
-    cache: 'no-store',
+    cache: "no-cache",
   });
   return res.json();
+} catch (error) {
+  console.log(error);
+}
+
 };
 
 export default async function HomePage({

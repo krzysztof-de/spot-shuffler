@@ -1,9 +1,10 @@
 import dbConnect from "@/backend/config/dbConnect";
 import User, { IUser } from "@/backend/models/user";
-import { NextApiRequest, NextApiResponse } from "next";
+import {  NextApiResponse } from "next";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcript from "bcryptjs";
+import { NextRequest } from "next/server";
 
 type Credentials = {
   email: string;
@@ -14,7 +15,7 @@ type Token = {
   user: IUser;
 };
 
-const auth = async (req: NextApiRequest, res: NextApiResponse) => {
+const auth = async (req: NextRequest, res: any) => {
   return await NextAuth(req, res, {
     session: {
       strategy: "jwt",

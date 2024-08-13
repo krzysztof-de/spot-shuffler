@@ -20,6 +20,7 @@ const PlaceDetails = ({ data }: Props) => {
   const { place } = data;
   const coords = place?.location?.coordinates;
 
+  console.log("place", place);
   return (
     <div className="container container-fluid">
       <h2 className="mt-5">{place?.name}</h2>

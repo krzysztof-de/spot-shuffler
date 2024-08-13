@@ -9,6 +9,7 @@ import SalesStats from "./SalesStats";
 import { SalesChart } from "../charts/SalesCharts";
 import { TopPerformingChart } from "../charts/TopPerformingChart";
 import { useLazyGetSalesStatsQuery } from "@/redux/api/bookingApi";
+import { CustomError } from "@/interfaces/customError";
 
 const Dashboard = () => {
   const [startDate, setStartDate] = useState(new Date());
@@ -19,7 +20,8 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (error && "data" in error) {
-      toast.error(error?.data?.errMessage);
+      const customError = error?.data as CustomError;
+      toast.error(customError?.errMessage);
     }
 
     if (startDate && endDate && !data) {

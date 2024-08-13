@@ -1,5 +1,12 @@
 import dbConnect from "@/backend/config/dbConnect";
-import { deletePlace, updatePlace } from "@/backend/controllers/placesControllers";
+import {
+  deletePlace,
+  updatePlace,
+} from "@/backend/controllers/placesControllers";
+import {
+  authorizeRoles,
+  isAuthenticatedUser,
+} from "@/backend/middlewares/auth";
 import { createEdgeRouter } from "next-connect";
 import { NextRequest } from "next/server";
 
@@ -13,8 +20,8 @@ const router = createEdgeRouter<NextRequest, RequestContext>();
 
 dbConnect();
 
-router.put(updatePlace);
-router.delete(deletePlace);
+router.use(isAuthenticatedUser, authorizeRoles("admin")).put(updatePlace);
+router.use(isAuthenticatedUser, authorizeRoles("admin")).delete(deletePlace);
 
 export async function PUT(request: NextRequest, ctx: RequestContext) {
   return router.run(request, ctx);

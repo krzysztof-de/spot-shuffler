@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import Place, { IPlace, IReview } from "../models/place";
+import Place, { IImage, IPlace, IReview } from "../models/place";
 import ErrorHandler from "../utils/errorHandler";
 import { catchAsyncErrors } from "../middlewares/catchAsyncErrors";
 import APIFilters from "../utils/apiFilters";
 import Booking from "../models/booking";
+import { delete_file, upload_file } from "../utils/cloudinary";
 
 // Get all places => /api/places
 export const allPlaces = catchAsyncErrors(async (req: NextRequest) => {
@@ -35,10 +36,9 @@ export const allPlaces = catchAsyncErrors(async (req: NextRequest) => {
 // Create new place => /api/admin/places
 export const newPlace = catchAsyncErrors(async (req: NextRequest) => {
   const body = await req.json();
+  body.user = req.user._id;
 
-  console.log("req body", body);
   const place = await Place.create(body);
-  console.log("returned place", place);
   return NextResponse.json({
     success: true,
     place,
@@ -82,6 +82,60 @@ export const updatePlace = catchAsyncErrors(
   }
 );
 
+// Upload Place Images => /api/admin/places/:id/upload_images
+export const uploadPlaceImages = catchAsyncErrors(
+  async (req: NextRequest, { params }: { params: { id: string } }) => {
+    const place = await Place.findById(params.id);
+    const body = await req.json();
+
+    if (!place) {
+      throw new ErrorHandler("Place not found", 404);
+    }
+
+    const uploader = async (image: string) =>
+      upload_file(image, "places/places");
+    const urls = await Promise.all(body.images.map(uploader));
+
+    place?.images?.push(...urls);
+    await place.save();
+
+    return NextResponse.json({
+      succes: true,
+      place,
+    });
+  }
+);
+
+// Delete place pmage => /api/admin/places/:id/delete_image
+export const deletePlaceImage = catchAsyncErrors(
+  async (req: NextRequest, { params }: { params: { id: string } }) => {
+    const place = await Place.findById(params.id);
+    const body = await req.json();
+
+    if (!place) {
+      throw new ErrorHandler("Place not found", 404);
+    }
+    const isDeleted = await delete_file(body?.imgId);
+
+    if (!isDeleted) {
+      throw new ErrorHandler("Image not found", 404);
+    }
+
+    if (isDeleted) {
+      place.images = place.images.filter(
+        (img: IImage) => img.public_id !== body.imgId
+      );
+    }
+
+    await place.save();
+
+    return NextResponse.json({
+      succes: true,
+      place,
+    });
+  }
+);
+
 // Delete place => /api/admin/places/:id
 export const deletePlace = catchAsyncErrors(
   async (req: NextRequest, { params }: { params: { id: string } }) => {
@@ -89,6 +143,10 @@ export const deletePlace = catchAsyncErrors(
 
     if (!place) {
       throw new ErrorHandler("Place not found", 404);
+    }
+    // Delete place images
+    for (let i = 0; i < place?.length; i++) {
+      await delete_file(place?.images[i].public_id);
     }
 
     // TODO delete images assosiated
@@ -154,5 +212,55 @@ export const canReview = catchAsyncErrors(async (req: NextRequest) => {
   const canReview = bookings?.length > 0;
   return NextResponse.json({
     canReview,
+  });
+});
+
+// Get All places - Admin => /api/admin/places
+export const allAdminPlaces = catchAsyncErrors(async (req: NextRequest) => {
+  const places = await Place.find();
+
+  return NextResponse.json({
+    places,
+  });
+});
+
+// Get place reviews - Admin => /api/admin/places/reviews
+export const getPlaceReviews = catchAsyncErrors(async (req: NextRequest) => {
+  const { searchParams } = new URL(req.url);
+
+  const place = await Place.findById(searchParams.get("placeId"));
+
+  return NextResponse.json({
+    reviews: place?.reviews,
+  });
+});
+
+// Delete place review - Admin => /api/admin/places/reviews
+export const deletePlaceReview = catchAsyncErrors(async (req: NextRequest) => {
+  const { searchParams } = new URL(req.url);
+
+  const placeId = searchParams.get("placeId");
+  const reviewId = searchParams.get("id");
+
+  const place = await Place.findById(placeId);
+
+  const reviews = place?.reviews.filter(
+    (review: IReview) => review._id?.toString() !== reviewId
+  );
+
+  const numOfReviews = reviews.length;
+
+  const ratings =
+    numOfReviews === 0
+      ? 0
+      : place?.reviews.reduce(
+          (acc: number, item: { rating: number }) => item.rating + acc,
+          0
+        ) / numOfReviews;
+
+  await Place.findByIdAndUpdate(placeId, { reviews, ratings, numOfReviews });
+
+  return NextResponse.json({
+    success: true,
   });
 });
