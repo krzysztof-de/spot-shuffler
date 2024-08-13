@@ -1,4 +1,3 @@
-import axios from "axios";
 import { GOOGLE_API, GOOGLE_API_KEY } from "./consts";
 
 interface AddressComponent {
@@ -26,18 +25,18 @@ interface GeocodeResponse {
 export const googleGeocode = async (
   address: string
 ): Promise<GeocodeResult> => {
-  try {
-    const response = await axios.get<GeocodeResponse>(GOOGLE_API, {
-      params: {
-        address: address,
-        key: GOOGLE_API_KEY,
-      },
-    });
+  const url = new URL(GOOGLE_API);
+  url.searchParams.append("address", address);
+  url.searchParams.append("key", GOOGLE_API_KEY);
 
-    if (response.data.status === "OK") {
-      return response.data.results[0];
+  try {
+    const response = await fetch(url.toString());
+    const data: GeocodeResponse = await response.json();
+
+    if (data.status === "OK") {
+      return data.results[0];
     } else {
-      throw new Error("Geocoding failed: " + response.data.status);
+      throw new Error("Geocoding failed: " + data.status);
     }
   } catch (error) {
     console.error("Error during geocoding:", error);

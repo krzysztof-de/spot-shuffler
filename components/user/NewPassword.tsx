@@ -7,11 +7,11 @@ import toast from "react-hot-toast";
 import ButtonLoader from "../layout/ButtonLoader";
 import { CustomError } from "@/interfaces/customError";
 
-interface Props {
+interface NewPasswordProps {
   token: string;
 }
 
-const NewPassword = ({ token }: Props) => {
+const NewPassword: React.FC<NewPasswordProps> = ({ token }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const router = useRouter();

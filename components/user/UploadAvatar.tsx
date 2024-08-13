@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 import ButtonLoader from "../layout/ButtonLoader";
 import { CustomError } from "@/interfaces/customError";
 
-const UploadAvatar = () => {
+const UploadAvatar: React.FC  = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 

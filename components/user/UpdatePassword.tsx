@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import ButtonLoader from "../layout/ButtonLoader";
 import { CustomError } from "@/interfaces/customError";
 
-const UpdatePassword = () => {
+const UpdatePassword: React.FC  = () => {
   const [password, setPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const router = useRouter();
