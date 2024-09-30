@@ -1,5 +1,10 @@
 "use client";
-import { IReview } from "@/backend/models/place";
+import { IReview as OriginalIReview } from "@/backend/models/place";
+
+interface IReview extends OriginalIReview {
+  _id: string;
+}
+
 import { CustomError } from "@/interfaces/customError";
 import {
   useDeleteReviewMutation,
@@ -83,7 +88,7 @@ const PlaceReviews = () => {
       router.refresh();
       toast.success("Review deleted");
     }
-  }, [error, isSuccess]);
+  }, [error, isSuccess, router]);
 
   return (
     <div>

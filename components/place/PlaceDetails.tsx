@@ -75,7 +75,7 @@ const PlaceDetails = ({ data }: Props) => {
         </div>
       </div>
 
-      <NewReview placeId={place?._id} />
+      <NewReview placeId={place?._id as string} />
       <ListReviews reviews={place?.reviews} />
     </div>
   );

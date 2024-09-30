@@ -25,11 +25,11 @@ const ListReviews = ({ reviews }: Props) => {
         </button>
       </div>
       <hr />
-      {reviews?.map((review: IReview) => {
+      {reviews?.map((review: IReview, i) => {
         const avatar = review?.user?.avatar;
 
         return (
-          <div className="review-card my-3">
+          <div className="review-card my-3" key={`card-${i}`}>
             <div className="row">
               <div className="col-3 col-lg-1">
                 <Image

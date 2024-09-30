@@ -76,8 +76,8 @@ const MyBookings = ({ data }: Props) => {
         </thead>
         <tbody>
           {seBookings(bookings)?.map((row) => (
-            <tr key={row.id}>
-              <td>{row.id}</td>
+            <tr key={`booking-${row.id}`}>
+              <td>{row.id as string}</td>
               <td>{new Date(row.checkin).toLocaleDateString()}</td>
               <td>{new Date(row.checkout).toLocaleDateString()}</td>
               <td>{`${row.amountPaid} PLN`}</td>

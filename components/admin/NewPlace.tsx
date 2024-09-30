@@ -48,7 +48,7 @@ const NewPlace = () => {
       router.push("/admin/places");
       toast.success("Place created");
     }
-  }, [error, isSuccess]);
+  }, [error, isSuccess, router]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -85,7 +85,7 @@ const NewPlace = () => {
   };
 
   const features: { name: string; value: keyof typeof placeDetails }[] = [
-    { name: "Favorite", value: "favorite" },
+    { name: "Favorite", value: "isFavorite" },
   ];
 
   return (
@@ -229,8 +229,8 @@ const NewPlace = () => {
             />
           </div>
 
-          {features?.map((feature) => (
-            <div className="form-check">
+          {features?.map((feature, i) => (
+            <div className="form-check" key={`check-${i}`}>
               <input
                 className="form-check-input"
                 type="checkbox"

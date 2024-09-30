@@ -47,7 +47,7 @@ const Invoice = ({ data }: BookingInputProps) => {
                   width={212}
                 />
               </div>
-              <h1>INVOICE # {booking?._id}</h1>
+              <h1>{`INVOICE # ${booking?._id}`}</h1>
               <div id="company" className="clearfix">
                 <div>Spot Shuffler</div>
                 <div>

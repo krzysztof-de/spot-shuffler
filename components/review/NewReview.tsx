@@ -27,7 +27,7 @@ const NewReview = ({ placeId }: { placeId: string }) => {
       toast.success("Review posted");
       router.refresh();
     }
-  }, [error, isSuccess]);
+  }, [error, isSuccess, router]);
 
   const handleSubmit = () => {
     const reviewData = {
