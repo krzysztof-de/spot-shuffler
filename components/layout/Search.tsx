@@ -4,25 +4,25 @@ import { useRouter } from "next/navigation";
 import React, { useCallback, useMemo, useState } from "react";
 
 interface IFilters {
-  location: string;
+  search: string;
   distance: string;
   category: string;
 }
 
 const Search = () => {
   const initialFilters = {
-    location: "",
+    search: "",
     distance: "",
     category: "",
   };
 
   const [filters, setFilters] = useState(initialFilters);
-  const { location, distance, category } = filters;
-  const isFiltered = location || distance || category;
+  const { search, distance, category } = filters;
+  const isFiltered = search || distance || category;
 
   const generateQueryString = useCallback((f: IFilters) => {
     return [
-      f?.location && `location=${encodeURIComponent(f?.location)}`,
+      f?.search && `location=${encodeURIComponent(f?.search)}`,
       f?.distance && `distance=${encodeURIComponent(f?.distance)}`,
       f?.category && `category=${encodeURIComponent(f?.category)}`,
     ]
@@ -51,23 +51,23 @@ const Search = () => {
         <form className="rounded p-0">
           <div className="d-flex w-100 filters-form">
             <div className="form-group mt-3 flex-fill me-3">
-              <label htmlFor="location_field" className="mb-1">
-                Location
+              <label htmlFor="search_field" className="mb-1">
+                Search
               </label>
               <input
                 type="text"
                 className="form-control"
-                name="location"
-                id="location_field"
-                placeholder="Enter location"
-                value={location}
+                name="search"
+                id="search_field"
+                placeholder="Enter a phrase"
+                value={search}
                 onChange={handleChange}
               />
             </div>
 
             <div className="form-group mt-3 flex-fill me-3">
-              <label htmlFor="guest_field" className="mb-1">
-                Distance
+              <label htmlFor="guest_field" className="mb-1" title="From your home location">
+                Distance 
               </label>
               <select
                 className="form-select"
@@ -87,7 +87,7 @@ const Search = () => {
 
             <div className="form-group mt-3 flex-fill">
               <label htmlFor="room_type_field" className="mb-1">
-                Place Type
+                Category
               </label>
               <select
                 className="form-select"
