@@ -30,7 +30,7 @@ const Dashboard = () => {
         endDate: endDate.toISOString(),
       });
     }
-  }, [error]);
+  }, [error, data, endDate, getSalesStats, startDate]);
 
   const handleSubmit = () => {
     getSalesStats({
@@ -41,8 +41,8 @@ const Dashboard = () => {
 
   if (!data) return <Loading />;
 
-  console.log('data', data);
-  
+  console.log("data", data);
+
   return (
     <div className="ps-4 my-5">
       <div className="d-flex justify-content-start align-items-center">

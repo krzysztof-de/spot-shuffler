@@ -29,7 +29,7 @@ const NewPassword: React.FC<NewPasswordProps> = ({ token }) => {
       toast.success("Password reset was successful");
       router.push("/login");
     }
-  }, [error, isSuccess]);
+  }, [error, isSuccess, router]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

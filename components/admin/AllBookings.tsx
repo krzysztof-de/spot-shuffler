@@ -53,7 +53,7 @@ const AllBookings = ({ data }: Props) => {
       router.refresh();
       toast.success("Booking deleted");
     }
-  }, [error, isSuccess]);
+  }, [error, isSuccess, router]);
 
   const handleDeleteBooking = (id: string) => {
     deleteBooking(id);
@@ -61,7 +61,7 @@ const AllBookings = ({ data }: Props) => {
 
   const setBookings = (bookings: IBooking[]) =>
     bookings?.map((booking) => ({
-      id: booking._id,
+      id: booking._id as string,
       checkin: booking.checkInDate,
       checkout: booking.checkOutDate,
       actions: (
@@ -81,7 +81,7 @@ const AllBookings = ({ data }: Props) => {
           <button
             className="btn btn-outline-danger mx-2"
             disabled={isLoading}
-            onClick={() => handleDeleteBooking(booking?._id)}
+            onClick={() => handleDeleteBooking(booking?._id as string)}
           >
             <i className="fa fa-trash"></i>
           </button>

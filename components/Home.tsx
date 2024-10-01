@@ -6,11 +6,12 @@ import CustomPagination from "./layout/CustomPagination";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import PoiMarkers, { PoiType } from "./poiMarkers/PoiMarkers";
+import Search from "./layout/Search";
 
 interface Props {
   data: {
     success: true;
-    filteredPlacesCount: number;
+    filterPlacesCount: number;
     resPerPage: number;
     places: IPlace[];
   };
@@ -23,26 +24,26 @@ const locations: PoiType[] = [
 const Home = ({ data }: Props) => {
   const searchParams = useSearchParams();
   const location = searchParams.get("location");
-  const { filteredPlacesCount, resPerPage, places } = data;
+  const { filterPlacesCount, resPerPage, places } = data;
 
   return (
     <div>
       <section id="places" className="container mt-5">
-        <h2 className="mb-3 ml-2 stays-heading">
+        <h3 className="mb-3 ml-2 stays-heading">
           {location
-            ? `${filteredPlacesCount} place${
-                filteredPlacesCount === 1 ? "" : "s"
+            ? `${filterPlacesCount} place${
+              filterPlacesCount === 1 ? "" : "s"
               } found with "${location}"`
             : "All places"}
-        </h2>
-        <Link href="/search" className="ml-2 back-to-search">
-          <i className="fa fa-arrow-left"></i> Back to Search
-        </Link>
+        </h3>
+        <Search />
         <div className="row mt-4">
           {places?.length === 0 ? (
-            <div className="alert alert-danger mt-5 w-100">Nothing here</div>
+            <div className="alert alert-danger mt-5 w-100" key="no-places">
+              Nothing here
+            </div>
           ) : (
-            places?.map((place) => <PlaceItem key={place._id} place={place} />)
+            places?.map((place) => <PlaceItem key={`item-${place._id}`} place={place} />)
           )}
         </div>
       </section>
@@ -52,7 +53,7 @@ const Home = ({ data }: Props) => {
 
       <CustomPagination
         resPerPage={resPerPage}
-        filterPlacesCount={filteredPlacesCount}
+        filterPlacesCount={filterPlacesCount}
       />
     </div>
   );

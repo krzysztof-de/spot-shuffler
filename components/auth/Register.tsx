@@ -1,8 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { registerUser } from "@/app/actions";
 import SubmitButton from "../form/SubmitButton";
+import { registerUser } from "@/actions/actions";
 
 const Register = () => {
   const router = useRouter();

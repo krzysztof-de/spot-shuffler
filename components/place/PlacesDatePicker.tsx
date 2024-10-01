@@ -69,7 +69,7 @@ const PlacesDatePicker = ({ place }: Props) => {
       router.replace(checkoutData?.url);
       console.log(checkoutData)
     }
-  }, [error, checkoutData]);
+  }, [error, checkoutData, router]);
 
   const handleBookPlace = () => {
     const checkoutData = {
@@ -116,8 +116,8 @@ const PlacesDatePicker = ({ place }: Props) => {
       <DatePicker
         selected={checkInDate}
         onChange={handleOnChange}
-        startDate={checkInDate}
-        endDate={checkOutDate}
+        startDate={checkInDate!}
+        endDate={checkOutDate!}
         minDate={new Date()}
         className="w-100"
         excludeDates={excludeDates}

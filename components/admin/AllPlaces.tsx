@@ -22,14 +22,14 @@ const AllPlaces = ({ data }: InputProps) => {
   useEffect(() => {
     if (error && "data" in error) {
       const customError = error?.data as CustomError;
-      toast.error(customError?.errMessage);
+
     }
 
     if (isSuccess) {
       router.refresh();
       toast.success("Place deleted");
     }
-  }, [error, isSuccess]);
+  }, [error, isSuccess, router]);
 
   const columns = [
     {
@@ -52,7 +52,7 @@ const AllPlaces = ({ data }: InputProps) => {
   const places = data?.places;
 
   const deletePlaceHandler = (id: string) => {
-    deletePlace(id);
+    deletePlace(id as unknown as string);
   };
 
   const mapPlaces = (places: IPlace[]) =>
@@ -75,7 +75,7 @@ const AllPlaces = ({ data }: InputProps) => {
           </Link>
           <button
             className="btn btn-outline-danger ms-2 btn-sm"
-            onClick={() => deletePlaceHandler(place._id)}
+            onClick={() => deletePlaceHandler(place._id as string)}
           >
             <i className="fa fa-trash"></i>
           </button>
@@ -103,9 +103,9 @@ const AllPlaces = ({ data }: InputProps) => {
           </tr>
         </thead>
         <tbody>
-          {mapPlaces(places)?.map((row) => (
-            <tr key={row.id}>
-              <td>{row.id}</td>
+          {mapPlaces(places).map((row) => (
+            <tr key={`place-${row.id}`}>
+              <td>{row.id as string}</td>
               <td>{row.name}</td>
               <td>{row.actions}</td>
             </tr>

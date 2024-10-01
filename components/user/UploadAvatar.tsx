@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import ButtonLoader from "../layout/ButtonLoader";
 import { CustomError } from "@/interfaces/customError";
+import Image from "next/image";
 
 const UploadAvatar: React.FC  = () => {
   const dispatch = useAppDispatch();
@@ -46,7 +47,7 @@ const UploadAvatar: React.FC  = () => {
       updateSession();
       router.refresh();
     }
-  }, [user, error, isSuccess]);
+  }, [user, error, isSuccess, router, updateSession]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -80,7 +81,7 @@ const UploadAvatar: React.FC  = () => {
             <div className="d-flex align-items-center">
               <div className="me-3">
                 <figure className="avatar item-rtl">
-                  <img
+                  <Image
                     src={avatarPreviev}
                     className="rounded-circle"
                     alt="image"

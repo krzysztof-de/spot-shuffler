@@ -5,10 +5,10 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import toast from "react-hot-toast";
 import { setUser } from "@/redux/features/userSlice";
-import { updateUserProfile } from "@/app/actions";
 import SubmitButton from "../form/SubmitButton";
+import { updateUserProfile } from "@/actions/actions";
 
-const UpdateProfile = () => {
+const UpdateProfile: React.FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 

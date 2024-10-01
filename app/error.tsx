@@ -1,8 +1,7 @@
 "use client";
 
-interface CustomError extends Error {
-  errMessage: string;
-}
+import { CustomError } from "@/interfaces/customError";
+
 export default function Error({
   error,
   reset,

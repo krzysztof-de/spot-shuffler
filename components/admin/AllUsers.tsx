@@ -57,7 +57,7 @@ const AllUsers = ({ data }: Props) => {
       router.refresh();
       toast.success("User deleted");
     }
-  }, [error, isSuccess]);
+  }, [error, isSuccess, router]);
 
   const handleDeleteUser = (id: string) => {
     deleteUser(id);
@@ -80,7 +80,7 @@ const AllUsers = ({ data }: Props) => {
           <button
             className="btn btn-outline-danger mx-2"
             disabled={isLoading}
-            onClick={() => handleDeleteUser(user?._id)}
+            onClick={() => handleDeleteUser(user?._id as string)}
           >
             <i className="fa fa-trash"></i>
           </button>
@@ -101,8 +101,8 @@ const AllUsers = ({ data }: Props) => {
         </thead>
         <tbody>
           {setUsers(users)?.map((row) => (
-            <tr key={row.id}>
-              <td>{row.id}</td>
+            <tr key={`user-${row.id}`}>
+              <td>{row.id as string}</td>
               <td>{row.name}</td>
               <td>{row.email}</td>
               <td>{row.role}</td>

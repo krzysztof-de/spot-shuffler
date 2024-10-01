@@ -18,6 +18,7 @@ import toast from "react-hot-toast";
 import ButtonLoader from "../layout/ButtonLoader";
 import { revalidateTag } from "@/utils/maps";
 import { CustomError } from "@/interfaces/customError";
+import Image from "next/image";
 
 interface Props {
   data: {
@@ -63,7 +64,7 @@ const UploadPlaceImages = ({ data }: Props) => {
       toast.success("Images uploaded successfully");
       router.push(`/admin/places/${data.place.id}`);
     }
-  }, [error, isSuccess]);
+  }, [error, isSuccess, data.place.id, router]);
 
   useEffect(() => {
     if (deleteError && "data" in deleteError) {
@@ -76,7 +77,7 @@ const UploadPlaceImages = ({ data }: Props) => {
       router.refresh();
       toast.success("Images deleted successfully");
     }
-  }, [deleteError, isDeleteSuccess]);
+  }, [deleteError, isDeleteSuccess, router]);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const files = Array.from(e.target.files || []);
@@ -151,7 +152,7 @@ const UploadPlaceImages = ({ data }: Props) => {
                   {imagesPreview?.map((img, i) => (
                     <div className="col-md-3 mt-2" key={`ip-${i}`}>
                       <div className="card">
-                        <img
+                        <Image
                           src={img}
                           alt="Img Preview"
                           className="card-img-top p-2"
@@ -182,7 +183,7 @@ const UploadPlaceImages = ({ data }: Props) => {
                   {uploadedImages?.map((img, i) => (
                     <div className="col-md-3 mt-2" key={`i-${i}`}>
                       <div className="card">
-                        <img
+                        <Image
                           src={img?.url}
                           alt={img?.url}
                           className="card-img-top p-2"

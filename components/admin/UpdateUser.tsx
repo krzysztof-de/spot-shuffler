@@ -44,7 +44,7 @@ const UpdateUser = ({ data }: Props) => {
       router.refresh();
       toast.success("User created");
     }
-  }, [error, isSuccess]);
+  }, [error, isSuccess, router]);
 
   return (
     <div className="row wrapper">

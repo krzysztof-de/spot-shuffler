@@ -25,7 +25,7 @@ const UpdatePassword: React.FC  = () => {
       toast.success("Password updated");
       router.refresh();
     }
-  }, [error, isSuccess]);
+  }, [error, isSuccess, router]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

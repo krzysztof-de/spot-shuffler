@@ -1,7 +1,6 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
-import Pagination from "react-js-pagination";
 
 interface Props {
   resPerPage: number;
@@ -35,19 +34,41 @@ const CustomPagination = ({ resPerPage, filterPlacesCount }: Props) => {
     <>
       {resPerPage < filterPlacesCount && (
         <div>
-          <Pagination
-            activePage={page}
-            itemsCountPerPage={resPerPage}
-            totalItemsCount={filterPlacesCount}
-            onChange={handlePageChange}
-            pageRangeDisplayed={5}
-            nextPageText={"Next"}
-            prevPageText={"Prev"}
-            firstPageText={"First"}
-            lastPageText={"Last"}
-            itemClass="page-item"
-            linkClass="page-link"
-          />
+          <ul className="pagination">
+            <li
+              className={`page-item ${page === 1 ? "disabled" : ""}`}
+              onClick={() => handlePageChange((page - 1).toString())}
+            >
+              <a className="page-link" href="#">
+                Previous
+              </a>
+            </li>
+            {Array.from({
+              length: Math.ceil(filterPlacesCount / resPerPage),
+            }).map((_, index) => (
+              <li
+                key={index}
+                className={`page-item ${page === index + 1 ? "active" : ""}`}
+                onClick={() => handlePageChange((index + 1).toString())}
+              >
+                <a className="page-link" href="#">
+                  {index + 1}
+                </a>
+              </li>
+            ))}
+            <li
+              className={`page-item ${
+                page === Math.ceil(filterPlacesCount / resPerPage)
+                  ? "disabled"
+                  : ""
+              }`}
+              onClick={() => handlePageChange((page + 1).toString())}
+            >
+              <a className="page-link" href="#">
+                Next
+              </a>
+            </li>
+          </ul>
         </div>
       )}
     </>
