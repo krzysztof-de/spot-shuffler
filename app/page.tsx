@@ -14,7 +14,9 @@ const getPlaces = async (searchParams: string) => {
     const res = await fetch(`${process.env.API_URL}api/places?${queryString}`, {
       cache: "no-cache",
     });
-    return res.json();
+    const data = await res.json();
+
+    return data;
   } catch (error) {
     console.log(error);
   }
