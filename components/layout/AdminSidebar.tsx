@@ -36,7 +36,6 @@ const AdminSidebar = () => {
   const pathName = usePathname();
   const [activeMenuItem, setActiveMenuItem] = useState(pathName);
 
-  console.log("process.env.NODE_ENV", process.env.NODE_ENV);
   const handleMenuItemClick = (menuItem: string) => {
     setActiveMenuItem(menuItem);
   };
