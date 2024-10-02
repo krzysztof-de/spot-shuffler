@@ -3,11 +3,11 @@ import mongoose from "mongoose";
 const dbConnect = async () => {
   if (mongoose.connection.readyState >= 1) return;
   let DB_URI: string = "";
+  const env = process.env.NODE_ENV;
+  if (env === "development") DB_URI = process.env.DB_LOCAL_URI!;
 
-  if (process.env.NODE_ENV === "development")
-    DB_URI = process.env.DB_LOCAL_URI!;
-
-  if (process.env.NODE_ENV === "production") DB_URI = process.env.MONGODB_URI!;
+  if (["production", "preview"].includes(env))
+    DB_URI = process.env.MONGODB_URI!;
 
   await mongoose.connect(DB_URI);
 };
