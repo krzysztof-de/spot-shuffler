@@ -6,7 +6,7 @@ const nextConfig = {
     DB_URI: "mongodb://localhost:27017/places",
 
     NEXTAUTH_URL: "https://neighborhood-drift.vercel.app",
-    NEXTAUTH_SECRET: "DOASKPODKAPODALMAMSDAMDASDSADASDQWedqad8",
+    NEXTAUTH_SECRET: "DOASKPODKAPODALMAMSDAMDASDSADASDQWdsedqad8",
   },
   images: {
     domains: ["picsum.photos", 'res.cloudinary.com'],
