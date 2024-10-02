@@ -18,7 +18,9 @@ const Header = () => {
     }
   }, [data, dispatch]);
 
-  console.log("process.env.NODE_ENV", process.env.NODE_ENV);
+  console.log('Environment:', process.env.NODE_ENV);
+  console.log('process.env.DB_LOCAL_URI!:', process.env.DB_LOCAL_URI!);
+
   const logoutHandler = () => {
     signOut();
   };
