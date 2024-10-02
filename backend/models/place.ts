@@ -1,5 +1,5 @@
 import { categories } from "@/utils/categories";
-import mongoose, { Document, Schema, Types, model, models } from "mongoose";
+import { Document, Schema, Types, model, models } from "mongoose";
 import { googleGeocode } from "../utils/geoCoder";
 import { IUser } from "./user";
 

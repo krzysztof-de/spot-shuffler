@@ -1,0 +1,17 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "noEmit": false,
+        "outDir": ".temp",
+        "module": "CommonJS",
+        "target": "ES2020",
+        "isolatedModules": false,
+        "moduleResolution": "node",
+    },
+    "include": [
+        "seeder/seeder.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
