@@ -18,10 +18,6 @@ const Header = () => {
     }
   }, [data, dispatch]);
 
-  console.log('Environment:', process.env.NODE_ENV);
-  console.log('process.env.MONGODB_URI!:', process.env.MONGODB_URI!);
-  console.log('process.env.SOME_ONE!:', process.env.SOME_ONE!);
-
   const logoutHandler = () => {
     signOut();
   };
