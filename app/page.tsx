@@ -11,6 +11,7 @@ const getPlaces = async (searchParams: string) => {
   const queryString = urlParams.toString();
 
   console.log('MONGODB_URI:', process.env.MONGODB_URI);
+  console.log('DATA_API_URL:', process.env.DATA_API_URL);
 
   try {
     const res = await fetch(`${process.env.API_URL}api/places?${queryString}`, {
