@@ -6,10 +6,8 @@ import {
 } from "@/redux/api/placeApi";
 import { useRouter } from "next/navigation";
 import React, {
-  ChangeEvent,
   ChangeEventHandler,
   MouseEventHandler,
-  use,
   useEffect,
   useRef,
   useState,
