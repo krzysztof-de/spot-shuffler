@@ -7,7 +7,6 @@ const dbConnect = async () => {
   if (process.env.NODE_ENV === "development")
     DB_URI = process.env.DB_LOCAL_URI!;
 
-  console.log('MONGODB_URI:', process.env.MONGODB_URI);
   if (process.env.NODE_ENV === "production") DB_URI = process.env.MONGODB_URI!;
 
   await mongoose.connect(DB_URI);
