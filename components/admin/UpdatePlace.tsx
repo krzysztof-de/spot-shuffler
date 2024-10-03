@@ -170,7 +170,7 @@ const UpdatePlace = ({ data }: Props) => {
               type="text"
               id="site_field"
               className="form-control"
-              name="site"
+              name="pageLink"
               value={pageLink}
               onChange={handleChange}
             />
