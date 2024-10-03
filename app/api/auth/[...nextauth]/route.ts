@@ -1,6 +1,5 @@
 import dbConnect from "@/backend/config/dbConnect";
 import User, { IUser } from "@/backend/models/user";
-import {  NextApiResponse } from "next";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcript from "bcryptjs";
@@ -9,10 +8,6 @@ import { NextRequest } from "next/server";
 type Credentials = {
   email: string;
   password: string;
-};
-
-type Token = {
-  user: IUser;
 };
 
 const auth = async (req: NextRequest, res: any) => {
@@ -47,7 +42,9 @@ const auth = async (req: NextRequest, res: any) => {
     ],
     callbacks: {
       jwt: async ({ token, user }) => {
-        const jwtToken = token as Token;
+        const jwtToken = token as {
+          user: IUser;
+        };
         user && (token.user = user);
 
         // Update user session
